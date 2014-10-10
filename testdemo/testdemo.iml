@@ -7,7 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="libs1" level="project" />
+    <orderEntry type="library" exported="" name="gdx-sources" level="project" />
   </component>
 </module>
 
