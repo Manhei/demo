@@ -11,16 +11,12 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.blackvine.drawmap.ScreenMap;
+import com.me.mygdxgame.GameScreen;
 
 /**
  * Created by IceChen on 14-9-13.
  */
-public class Hero extends Actor {
-
-    private int margin = 2;
-    private int pixHeight = 5;
-    private int maxHp = 100; //总血量
-    private int currenHp = 100; //当前血量
+public class Hero {
 
     private static Hero Instance = null;
 
@@ -46,7 +42,6 @@ public class Hero extends Actor {
 
     public float speed = 3;
 
-
     private TextureAtlas ta;
     private TextureRegion hero;
     private TextureRegion[][] walkFrames;
@@ -55,18 +50,21 @@ public class Hero extends Actor {
     private float stateTime = 0;
     private TextureRegion keyFrame;
 
-    private int hero_width = 70;
-    private int hero_height = 124;
+    private int heroWidth = 70;
+    private int heroHeight = 124;
 
-    private float getHero_width = hero_width;
-    private float getHero_height = hero_height;
-
+    private float getHeroWidth = heroWidth;
+    private float getHeroHeight = heroHeight;
+    private float mapX;
+    private float mapY;
+    private float screenX;
+    private float screenY;
 
 
     private Hero() {
         ta = new TextureAtlas(Gdx.files.internal("data/hero.pack"));
         hero = ta.findRegion("hero_girl");
-        walkFrames = hero.split(hero_width, hero_height);
+        walkFrames = hero.split(heroWidth, heroHeight);
         walkAnimation = new Animation[17];
         walkAnimation[LEFT] = new Animation(frameDuration, walkFrames[1]);
         walkAnimation[RIGHT] = new Animation(frameDuration, walkFrames[2]);
@@ -84,24 +82,16 @@ public class Hero extends Actor {
         walkAnimation[STATIC_DOWN_RIGHT] = new Animation(frameDuration, walkFrames[5][0]);
         walkAnimation[STATIC_UP_RIGHT] = new Animation(frameDuration, walkFrames[7][0]);
         walkAnimation[STATIC_DOWN_LEFT] = new Animation(frameDuration, walkFrames[4][0]);
-
-
-        setWidth(getHero_width);
-        setHeight(getHero_height);
-        setX(Gdx.graphics.getWidth()/2 - getWidth()/2);
-        setY(Gdx.graphics.getHeight()/2 - getHeight()/2);
+        setScreenX(GameScreen.ScreenWidth/2 - getHeroWidth/2);
+        setScreenY(GameScreen.ScreenHeight/2 - getHeroHeight/2);
 
     }
 
-    @Override
-    public void draw(SpriteBatch batch, float parentAlpha) {
+    public void draw(SpriteBatch batch) {
         stateTime += Gdx.graphics.getDeltaTime();
         keyFrame = walkAnimation[state].getKeyFrame(stateTime, true);
         go();
-        initHp(batch);
-        batch.draw(keyFrame, getX(), getY(), keyFrame.getRegionWidth(), keyFrame.getRegionHeight());
-
-        super.draw(batch, parentAlpha);
+        batch.draw(keyFrame, getScreenX(), getScreenY(), keyFrame.getRegionWidth(), keyFrame.getRegionHeight());
     }
 
     public void setState(int state) {
@@ -160,18 +150,18 @@ public class Hero extends Actor {
                 ScreenMap.getInstance().move_X_in_wordmap(+speed);
                 break;
         }
-        if (getX() < 0) {
-            setX(0);
-        }
-        if (getX() > Gdx.graphics.getWidth() - keyFrame.getRegionWidth()) {
-            setX(Gdx.graphics.getWidth() - keyFrame.getRegionWidth());
-        }
-        if (getY() < 0) {
-            setY(0);
-        }
-        if (getY() > Gdx.graphics.getHeight() - keyFrame.getRegionHeight()) {
-            setY(Gdx.graphics.getHeight() - keyFrame.getRegionHeight());
-        }
+//        if (getScreenX() < 0) {
+//            setScreenX(0);
+//        }
+//        if (getScreenX() > Gdx.graphics.getWidth() - keyFrame.getRegionWidth()) {
+//            setScreenX(Gdx.graphics.getWidth() - keyFrame.getRegionWidth());
+//        }
+//        if (getScreenY() < 0) {
+//            setScreenY(0);
+//        }
+//        if (getScreenY() > Gdx.graphics.getHeight() - keyFrame.getRegionHeight()) {
+//            setScreenY(Gdx.graphics.getHeight() - keyFrame.getRegionHeight());
+//        }
     }
 
     public static Hero getHero() {
@@ -181,20 +171,44 @@ public class Hero extends Actor {
         return Instance;
     }
 
+    public float getMapX() {
+        return mapX;
+    }
 
-    private void initHp(SpriteBatch batch){
-        Pixmap pixmap = new Pixmap(64,8, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.BLACK.r,Color.BLACK.g,Color.BLACK.b,Color.BLACK.a);
-        pixmap.drawRectangle(0, 0, hero_width -1, pixHeight);
-        Texture pixmaptex = new Texture(pixmap);
-        TextureRegion pix = new TextureRegion(pixmaptex, hero_width - 1 , hero_height);
-        batch.draw(pix, this.getX(), this.getY() + this.margin);
-        pixmap.setColor(Color.RED);
-        pixmap.fillRectangle(1, 1, ( hero_width * currenHp / maxHp ) -3, pixHeight - 2);
-        Texture hpixmaptex = new Texture(pixmap);
-        pixmap.dispose();
-        TextureRegion npix = new TextureRegion(hpixmaptex,hero_width - 3,hero_height);
-        batch.draw(npix, this.getX(),this.getY() + this.margin);
+    public void setMapX(float mapX) {
+        this.mapX = mapX;
+    }
+
+    public float getMapY() {
+        return mapY;
+    }
+
+    public void setMapY(float mapY) {
+        this.mapY = mapY;
+    }
+
+    /**
+     * 更改为获取screenX
+     * @return
+     */
+    public float getScreenX() {
+        return screenX;
+    }
+
+    public void setScreenX(float screenX) {
+        this.screenX = screenX;
+    }
+
+    /**
+     * 更改为获取screenY
+     * @return
+     */
+    public float getScreenY() {
+        return screenY;
+    }
+
+    public void setScreenY(float screenY) {
+        this.screenY = screenY;
     }
 
 }

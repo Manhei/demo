@@ -26,7 +26,6 @@ public class PieceManager {
             }
         }
         WorldMap.getWorldMap().isLoding = true;
-        System.out.print("true");
     }
 
     public static PieceManager getPieceManager() {

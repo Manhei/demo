@@ -6,11 +6,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 
 public class MyGdxGame extends Game {
-    private Screen currentScreen;
+    private static Screen currentScreen;
 
     @Override
     public void create() {
-        currentScreen = new testScreen();
+        currentScreen = new LodingScreen(this);
         this.setScreen(currentScreen);
     }
 
@@ -35,5 +35,11 @@ public class MyGdxGame extends Game {
 
     @Override
     public void resume() {
+    }
+
+    public void setCurrentScreen(Screen screen) {
+        currentScreen.dispose();
+        currentScreen = screen;
+        setScreen(screen);
     }
 }

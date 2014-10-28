@@ -3,7 +3,7 @@ package com.blackvine.drawmap;
 
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.me.mygdxgame.testScreen;
+import com.me.mygdxgame.GameScreen;
 
 /**
  * 世界地图类
@@ -31,7 +31,6 @@ public class WorldMap {
     public void updateAssetManager() {
         if (am.update()) {
             isLoding = false;
-            System.out.print("false");
         }
     }
 
@@ -63,7 +62,7 @@ public class WorldMap {
 
     public static int worldmapXtoScreenX(int x_in_worldmap) {
         int x_in_screenmap = 0;
-        x_in_screenmap = x_in_worldmap - ScreenMap.getX_in_wordmap();
+        x_in_screenmap = x_in_worldmap - ScreenMap.getInstance().getX_in_wordmap();
         return x_in_screenmap;
     }
 
@@ -75,7 +74,7 @@ public class WorldMap {
      */
     public static int worldmapYtoScreenY(int y_in_worldmap, int thisHeight) {
         int y_in_screenmap = 0;
-        y_in_screenmap = ScreenMap.getY_in_wordmap() - y_in_worldmap - thisHeight + testScreen.ScreenHeight;
+        y_in_screenmap = ScreenMap.getInstance().getY_in_wordmap() - y_in_worldmap - thisHeight + GameScreen.ScreenHeight;
         return y_in_screenmap;
     }
 

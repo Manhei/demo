@@ -1,5 +1,7 @@
 package com.blackvine.drawmap;
 
+import android.test.UiThreadTest;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
@@ -16,27 +18,15 @@ public class NinePieceMap {
     private int height;
 
     private NinePieceMap() {
-
         initPiece();
         width = PieceMap.getWidth() * col;
         height = PieceMap.getHeight() * row;
     }
 
     private void initPiece() {
-        piece_x_in_worldmap = ScreenMap.getX_in_wordmap() / PieceMap.getWidth() - 1;
-        piece_y_in_worldmap = ScreenMap.getY_in_wordmap() / PieceMap.getHeight() - 1;
+        piece_x_in_worldmap = ScreenMap.getInstance().getX_in_wordmap() / PieceMap.getWidth() - 1;
+        piece_y_in_worldmap = ScreenMap.getInstance().getY_in_wordmap() / PieceMap.getHeight() - 1;
         PieceManager.getPieceManager().load(piece_x_in_worldmap, piece_y_in_worldmap, col);
-        new Thread() {
-            @Override
-            public void run() {
-                while (WorldMap.getWorldMap().isLoding) {
-                    System.out.print("loop\n");
-                }
-                updatePiece();
-                preload();
-                super.run();
-            }
-        }.start();
     }
 
     public void draw(SpriteBatch batch, float parentAlpha) {
@@ -45,15 +35,15 @@ public class NinePieceMap {
                 map[i].draw(batch, parentAlpha);
             }
         }
-        if (ScreenMap.getX_in_wordmap() / PieceMap.getWidth() - 1 != piece_x_in_worldmap
-                || ScreenMap.getY_in_wordmap() / PieceMap.getHeight() - 1 != piece_y_in_worldmap)  {
+        if (ScreenMap.getInstance().getX_in_wordmap() / PieceMap.getWidth() - 1 != piece_x_in_worldmap
+                || ScreenMap.getInstance().getY_in_wordmap() / PieceMap.getHeight() - 1 != piece_y_in_worldmap)  {
             updatePiece();
         }
     }
 
     public void updatePiece() {
-        piece_x_in_worldmap = ScreenMap.getX_in_wordmap() / PieceMap.getWidth() - 1;
-        piece_y_in_worldmap = ScreenMap.getY_in_wordmap() / PieceMap.getHeight() - 1;
+        piece_x_in_worldmap = ScreenMap.getInstance().getX_in_wordmap() / PieceMap.getWidth() - 1;
+        piece_y_in_worldmap = ScreenMap.getInstance().getY_in_wordmap() / PieceMap.getHeight() - 1;
         for (int i = 0; i < col; i++) {
             for (int j = 0; j < row; j++) {
                 if (piece_x_in_worldmap + i > -1 && piece_x_in_worldmap + i < WorldMap.getMap_piece_width()
