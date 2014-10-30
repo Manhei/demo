@@ -22,7 +22,6 @@ public class GameScreen implements Screen {
 
 	public static final int ScreenWidth = 800;
 	public static final int ScreenHeight = 480;
-
 	private SpriteBatch bath;
 
 	private ScreenMap screenMap;
@@ -46,7 +45,6 @@ public class GameScreen implements Screen {
 		hero.draw(bath);
 		ucs.draw(bath);
 		bath.end();
-
 	}
 
 	@Override
@@ -56,7 +54,6 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void show() {
-
 		bath = new SpriteBatch();
 		ucs = UserControlScreen.getInstance();
 		// 黑色显示
@@ -68,9 +65,7 @@ public class GameScreen implements Screen {
 		// 显示在左上角位置,减去显示字体的高度，要不然会跑到屏幕外面，根本看不到
 		fps.setY(Gdx.graphics.getHeight() - fps.getHeight());
 		fps.setX(0);
-
 		stage = new Stage(ScreenWidth, ScreenHeight, true);
-
 		screenMap = ScreenMap.getInstance();
 		hero = Hero.getHero();
 		rocker = new Rocker();
@@ -109,7 +104,6 @@ public class GameScreen implements Screen {
 
 	}
 
-	@Override
 	public void dispose() {
 		bath.dispose();
 	}

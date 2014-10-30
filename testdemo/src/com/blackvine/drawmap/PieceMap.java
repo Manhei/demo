@@ -37,17 +37,19 @@ public class PieceMap {
 		}
 	}
 
-	public static int getWidth() {
-		return width;
-	}
-
-	public static int getHeight() {
-		return height;
-	}
-
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		batch.draw(texture, WorldMap.worldXtoScreenX(pieceX_InWorld * width),
 				WorldMap.worldYtoScreenY(pieceY_InWorld * height, height));
 	}
+
+
+    public static int getWidth() {
+        return width;
+    }
+
+    public static int getHeight() {
+        return height;
+    }
+
 
 }
