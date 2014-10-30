@@ -35,12 +35,21 @@ public class ScreenMap extends Actor{
         super.draw(batch, parentAlpha);
     }
 
+<<<<<<< HEAD
     public void moveX_InWorld(float x) {
     	xInWorld += (int)x;
     }
 
     public void moveY_InWorld(float y) {
     	yInWorld += (int)y;
+=======
+    public void move_X_in_wordmap(float x) {
+        x_in_wordmap += (int)x;
+    }
+
+    public void move_Y_in_wordmap(float y) {
+        y_in_wordmap += (int)y;
+>>>>>>> de8a6072de01bca5b50c35c66440fee1acaccdb0
     }
 
     public static ScreenMap getInstance() {

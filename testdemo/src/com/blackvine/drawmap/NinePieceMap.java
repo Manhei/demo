@@ -1,5 +1,7 @@
 package com.blackvine.drawmap;
 
+import android.test.UiThreadTest;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.blackvine.manager.PieceManager;
 
@@ -16,6 +18,7 @@ public class NinePieceMap {
 	private int width;
 	private int height;
 
+<<<<<<< HEAD
 	private NinePieceMap() {
 		initPiece();
 		width = PieceMap.getWidth() * col;
@@ -69,6 +72,49 @@ public class NinePieceMap {
 	public int getWidth() {
 		return width;
 	}
+=======
+    private NinePieceMap() {
+        initPiece();
+        width = PieceMap.getWidth() * col;
+        height = PieceMap.getHeight() * row;
+    }
+
+    private void initPiece() {
+        piece_x_in_worldmap = ScreenMap.getInstance().getX_in_wordmap() / PieceMap.getWidth() - 1;
+        piece_y_in_worldmap = ScreenMap.getInstance().getY_in_wordmap() / PieceMap.getHeight() - 1;
+        PieceManager.getPieceManager().load(piece_x_in_worldmap, piece_y_in_worldmap, col);
+    }
+
+    public void draw(SpriteBatch batch, float parentAlpha) {
+        for (int i = 0; i < col * row; i++) {
+            if (map[i] != null) {
+                map[i].draw(batch, parentAlpha);
+            }
+        }
+        if (ScreenMap.getInstance().getX_in_wordmap() / PieceMap.getWidth() - 1 != piece_x_in_worldmap
+                || ScreenMap.getInstance().getY_in_wordmap() / PieceMap.getHeight() - 1 != piece_y_in_worldmap)  {
+            updatePiece();
+        }
+    }
+
+    public void updatePiece() {
+        piece_x_in_worldmap = ScreenMap.getInstance().getX_in_wordmap() / PieceMap.getWidth() - 1;
+        piece_y_in_worldmap = ScreenMap.getInstance().getY_in_wordmap() / PieceMap.getHeight() - 1;
+        for (int i = 0; i < col; i++) {
+            for (int j = 0; j < row; j++) {
+                if (piece_x_in_worldmap + i > -1 && piece_x_in_worldmap + i < WorldMap.getMap_piece_width()
+                        && piece_y_in_worldmap + j > -1 && piece_y_in_worldmap + j < WorldMap.getMap_piece_height()) {
+                    map[i*row+j] = new PieceMap(piece_x_in_worldmap + i, piece_y_in_worldmap + j);
+                }
+                else {
+                    map[i*row+j] = null;
+                }
+            }
+        }
+        System.out.print("(" + piece_x_in_worldmap + "," + piece_y_in_worldmap + ")");
+        preload();
+    }
+>>>>>>> de8a6072de01bca5b50c35c66440fee1acaccdb0
 
 	public int getHeight() {
 		return height;
