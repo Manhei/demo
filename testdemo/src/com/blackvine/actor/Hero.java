@@ -108,46 +108,46 @@ public class Hero {
             case UP_LEFT:
 //                setX(getX()-speed);
 //                setY(getY()+speed);
-                ScreenMap.getInstance().move_X_in_wordmap(-temSpeed);
-                ScreenMap.getInstance().move_Y_in_wordmap(-temSpeed);
+                ScreenMap.getInstance().moveX_InWorld(-temSpeed);
+                ScreenMap.getInstance().moveY_InWorld(-temSpeed);
                 break;
             case UP_RIGHT:
 //                setX(getX()+speed);
 //                setY(getY()+speed);
-                ScreenMap.getInstance().move_X_in_wordmap(+temSpeed);
-                ScreenMap.getInstance().move_Y_in_wordmap(-temSpeed);
+                ScreenMap.getInstance().moveX_InWorld(+temSpeed);
+                ScreenMap.getInstance().moveY_InWorld(-temSpeed);
                 break;
             case DOWN_LEFT:
 //                setX(getX()-speed);
 //                setY(getY()-speed);
-                ScreenMap.getInstance().move_X_in_wordmap(-temSpeed);
-                ScreenMap.getInstance().move_Y_in_wordmap(+temSpeed);
+                ScreenMap.getInstance().moveX_InWorld(-temSpeed);
+                ScreenMap.getInstance().moveY_InWorld(+temSpeed);
                 break;
             case DOWN_RIGHT:
 //                setX(getX()+speed);
 //                setY(getY()-speed);
-                ScreenMap.getInstance().move_X_in_wordmap(+temSpeed);
-                ScreenMap.getInstance().move_Y_in_wordmap(+temSpeed);
+                ScreenMap.getInstance().moveX_InWorld(+temSpeed);
+                ScreenMap.getInstance().moveY_InWorld(+temSpeed);
                 break;
             case LEFT:
 //                setX(getX()-speed);
 //                setY(getY()+speed);
-                ScreenMap.getInstance().move_X_in_wordmap(-speed);
+                ScreenMap.getInstance().moveX_InWorld(-speed);
                 break;
             case UP:
 //                setX(getX()+speed);
 //                setY(getY()+speed);
-                ScreenMap.getInstance().move_Y_in_wordmap(-speed);
+                ScreenMap.getInstance().moveY_InWorld(-speed);
                 break;
             case DOWN:
 //                setX(getX()-speed);
 //                setY(getY()-speed);
-                ScreenMap.getInstance().move_Y_in_wordmap(+speed);
+                ScreenMap.getInstance().moveY_InWorld(+speed);
                 break;
             case RIGHT:
 //                setX(getX()+speed);
 //                setY(getY()-speed);
-                ScreenMap.getInstance().move_X_in_wordmap(+speed);
+                ScreenMap.getInstance().moveX_InWorld(+speed);
                 break;
         }
 //        if (getScreenX() < 0) {
