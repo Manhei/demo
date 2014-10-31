@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
@@ -21,16 +22,17 @@ public class UserControlScreen extends Actor {
 
 	private static UserControlScreen Instance = null;
 	// Texture headTexture;
-	TextureRegion headTextureRegion, itemTexRegion, miniMapTexRegion;
+	TextureRegion headTextureRegion, itemTexRegion, miniMapTexRegion,
+			chatTexRegion, settingTexRegion, missionDetailTexRegion,
+			teamTexRegion, getGoodsTexRegion, systemNoticeTexRegion;
 	Pixmap HeadPix;
 	SpriteBatch batch;
 	Button btnPlayerHead, btnSkill_1, btnSkill_2, btnSkill_3, btnSkill_4,
-			btnSkill_spec, btnItem, btnMiniMap;
+			btnSkill_spec, btnItem, btnMiniMap, btnChat, btnSetting;
 	TextureRegion hpBorderTexRegion, hpTexRegion, monterHpTexRegion;
 	TextureRegion mpBorderTexRegion, mpTexRegion;
-	TextureRegion skillTextureRegion_1, skillTextureRegion_2,
-			skillTextureRegion_3, skillTextureRegion_4,
-			skillTextureRegion_spec;
+	TextureRegion skillTexRegion_1, skillTexRegion_2, skillTexRegion_3,
+			skillTexRegion_4, skillTexRegion_spec;
 	TextureRegionDrawable temp;
 
 	public static UserControlScreen getInstance() {
@@ -47,10 +49,106 @@ public class UserControlScreen extends Actor {
 		temp = new TextureRegionDrawable();
 		initHeroState(); // 角色状态
 		monsterState(); // 怪物状态
+		chat(); // 聊天
 		skillState(); // 技能状态
 		itemState(); // 物品栏
 		miniMap(); // 小地图
+		setting(); // 设置页面
+		missionDetail(); // 任务描述
+		teamState(); // 组队信息
+		getGoods();// 物品获得信息栏 屏幕最上方
+		systemNotice();// 系统公告
+	}
 
+	private void systemNotice() {
+		Pixmap systemNoticePix = new Pixmap((int) (GameScreen.ScreenWidth / 2.5),
+				GameScreen.ScreenWidth / 35, Pixmap.Format.RGBA8888);
+		systemNoticePix.setColor(Color.WHITE);
+		systemNoticePix.fillRectangle(0, 0,
+				(int) (GameScreen.ScreenWidth / 2.5),
+				GameScreen.ScreenWidth / 35);
+		systemNoticeTexRegion = new TextureRegion(new Texture(systemNoticePix));
+
+	}
+
+	private void getGoods() {
+		Pixmap getGoodsPix = new Pixmap(GameScreen.ScreenWidth
+				- miniMapTexRegion.getRegionWidth(),
+				GameScreen.ScreenWidth / 50, Pixmap.Format.RGBA8888);
+		getGoodsPix.setColor(Color.WHITE);
+		getGoodsPix.fillRectangle(0, 0, GameScreen.ScreenWidth
+				- miniMapTexRegion.getRegionWidth(),
+				GameScreen.ScreenWidth / 50);
+		getGoodsTexRegion = new TextureRegion(new Texture(getGoodsPix));
+
+	}
+
+	private void teamState() {
+		Pixmap teamPix = new Pixmap(GameScreen.ScreenHeight / 4,
+				(int) (GameScreen.ScreenHeight / 2.8), Pixmap.Format.RGBA8888);
+		teamPix.setColor(Color.ORANGE);
+		teamPix.fillRectangle(0, 0, GameScreen.ScreenHeight / 4,
+				(int) (GameScreen.ScreenHeight / 2.8));
+		teamTexRegion = new TextureRegion(new Texture(teamPix));
+
+	}
+
+	private void missionDetail() {
+		Pixmap missionPix = new Pixmap(GameScreen.ScreenHeight / 4,
+				(int) (GameScreen.ScreenHeight / 3.5), Pixmap.Format.RGBA8888);
+		missionPix.setColor(Color.PINK);
+		missionPix.fillRectangle(0, 0, GameScreen.ScreenHeight / 4,
+				(int) (GameScreen.ScreenHeight / 3.5));
+		missionDetailTexRegion = new TextureRegion(new Texture(missionPix));
+
+	}
+
+	private void setting() {
+		Pixmap settingPix = new Pixmap(GameScreen.ScreenWidth / 15,
+				GameScreen.ScreenWidth / 20, Pixmap.Format.RGBA8888);
+		settingPix.setColor(Color.WHITE);
+		settingPix.drawRectangle(0, 0, GameScreen.ScreenWidth / 3,
+				GameScreen.ScreenHeight / 8);
+		settingTexRegion = new TextureRegion(new Texture(settingPix));
+		temp.setRegion(settingTexRegion);
+		btnSetting = new Button(temp);
+		btnSetting.setPosition(
+				GameScreen.ScreenWidth - settingTexRegion.getRegionWidth(),
+				GameScreen.ScreenHeight - miniMapTexRegion.getRegionHeight()
+						- settingTexRegion.getRegionHeight());
+		btnSetting.addListener(new InputListener() {
+
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
+				System.out.println("点击了设置");
+				return super.touchDown(event, x, y, pointer, button);
+			}
+		});
+
+	}
+
+	private void chat() {
+		Pixmap chatPix = new Pixmap(GameScreen.ScreenWidth / 3,
+				GameScreen.ScreenHeight / 8, Pixmap.Format.RGBA8888);
+		chatPix.setColor(Color.WHITE);
+		chatPix.drawRectangle(0, 0, GameScreen.ScreenWidth / 3,
+				GameScreen.ScreenHeight / 8);
+		chatTexRegion = new TextureRegion(new Texture(chatPix));
+		temp.setRegion(chatTexRegion);
+		btnChat = new Button(temp);
+		btnChat.setPosition(
+				GameScreen.ScreenWidth / 2 - chatTexRegion.getRegionWidth() / 2,
+				2);
+		btnChat.addListener(new InputListener() {
+
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
+				System.out.println("点击了聊天");
+				return super.touchDown(event, x, y, pointer, button);
+			}
+		});
 	}
 
 	private void initHeroState() {
@@ -63,8 +161,9 @@ public class UserControlScreen extends Actor {
 		headTextureRegion = new TextureRegion(new Texture(HeadPix));
 		temp.setRegion(headTextureRegion);
 		btnPlayerHead = new Button(temp);
-		btnPlayerHead.setPosition(GameScreen.ScreenWidth / 30,
-				GameScreen.ScreenHeight * 8 / 10);
+		btnPlayerHead.setPosition(GameScreen.ScreenWidth / 50,
+				GameScreen.ScreenHeight - headTextureRegion.getRegionHeight()
+						- GameScreen.ScreenWidth / 50);
 		btnPlayerHead.addListener(new InputListener() {
 
 			@Override
@@ -93,35 +192,35 @@ public class UserControlScreen extends Actor {
 
 	private void monsterState() {
 		Pixmap monsterHpPix = new Pixmap(GameScreen.ScreenWidth / 5,
-				GameScreen.ScreenWidth / 40, Pixmap.Format.RGBA8888);
+				GameScreen.ScreenWidth / 35, Pixmap.Format.RGBA8888);
 		monsterHpPix.setColor(Color.GREEN);
 		monsterHpPix.fillRectangle(1, 1, GameScreen.ScreenWidth / 5,
-				GameScreen.ScreenWidth / 40);
+				GameScreen.ScreenWidth / 35);
 		Texture monsterHpTex = new Texture(monsterHpPix);
 		monterHpTexRegion = new TextureRegion(monsterHpTex);
 	}
 
 	private void skillState() {
-		Pixmap skillPix = new Pixmap(GameScreen.ScreenWidth / 12,
-				GameScreen.ScreenWidth / 12, Pixmap.Format.RGBA8888);
-		skillPix.setColor(Color.WHITE);
-		skillPix.drawRectangle(0, 0, GameScreen.ScreenWidth / 12,
-				GameScreen.ScreenWidth / 12);
+		Pixmap skillPix = new Pixmap(GameScreen.ScreenWidth / 15,
+				GameScreen.ScreenWidth / 15, Pixmap.Format.RGBA8888);
+		skillPix.setColor(Color.GREEN);
+		skillPix.drawRectangle(0, 0, GameScreen.ScreenWidth / 15,
+				GameScreen.ScreenWidth / 15);
 		Texture skillTex = new Texture(skillPix);
 
-		skillTextureRegion_1 = new TextureRegion(skillTex);
-		skillTextureRegion_2 = new TextureRegion(skillTex);
-		skillTextureRegion_3 = new TextureRegion(skillTex);
-		skillTextureRegion_4 = new TextureRegion(skillTex);
-		skillTextureRegion_spec = new TextureRegion(skillTex);
+		skillTexRegion_1 = new TextureRegion(skillTex);
+		skillTexRegion_2 = new TextureRegion(skillTex);
+		skillTexRegion_3 = new TextureRegion(skillTex);
+		skillTexRegion_4 = new TextureRegion(skillTex);
+		skillTexRegion_spec = new TextureRegion(skillTex);
 
-		temp.setRegion(skillTextureRegion_1);
+		temp.setRegion(skillTexRegion_1);
 		btnSkill_1 = new Button(temp);
 		btnSkill_1.setPosition(
-				GameScreen.ScreenWidth - skillTextureRegion_1.getRegionWidth()
-						* 2 - GameScreen.ScreenWidth * 2 / 40,
-				skillTextureRegion_1.getRegionHeight()
-						+ GameScreen.ScreenHeight * 2 / 40);
+				GameScreen.ScreenWidth - skillTexRegion_1.getRegionWidth() * 2
+						- GameScreen.ScreenWidth * 2 / 50,
+				skillTexRegion_1.getRegionHeight() + GameScreen.ScreenHeight
+						* 2 / 50);
 		btnSkill_1.addListener(new InputListener() {
 
 			@Override
@@ -132,13 +231,14 @@ public class UserControlScreen extends Actor {
 			}
 		});
 
-		temp.setRegion(skillTextureRegion_2);
+		temp.setRegion(skillTexRegion_2);
 		btnSkill_2 = new Button(temp);
-		btnSkill_2.setPosition(
-				GameScreen.ScreenWidth - skillTextureRegion_2.getRegionWidth()
-						- GameScreen.ScreenWidth / 40,
-				skillTextureRegion_2.getRegionHeight()
-						+ GameScreen.ScreenHeight * 2 / 40);
+		btnSkill_2
+				.setPosition(
+						GameScreen.ScreenWidth
+								- skillTexRegion_2.getRegionWidth()
+								- GameScreen.ScreenWidth / 50,
+						(skillTexRegion_2.getRegionHeight() + GameScreen.ScreenHeight / 50) / 2);
 		btnSkill_2.addListener(new InputListener() {
 
 			@Override
@@ -149,12 +249,12 @@ public class UserControlScreen extends Actor {
 			}
 		});
 
-		temp.setRegion(skillTextureRegion_3);
+		temp.setRegion(skillTexRegion_3);
 		btnSkill_3 = new Button(temp);
 		btnSkill_3.setPosition(
-				GameScreen.ScreenWidth - skillTextureRegion_3.getRegionWidth()
-						* 2 - GameScreen.ScreenWidth * 2 / 40,
-				+GameScreen.ScreenHeight / 40);
+				GameScreen.ScreenWidth - skillTexRegion_3.getRegionWidth() * 2
+						- GameScreen.ScreenWidth * 2 / 50,
+				+GameScreen.ScreenHeight / 50);
 		btnSkill_3.addListener(new InputListener() {
 
 			@Override
@@ -165,12 +265,14 @@ public class UserControlScreen extends Actor {
 			}
 		});
 
-		temp.setRegion(skillTextureRegion_4);
+		temp.setRegion(skillTexRegion_4);
 		btnSkill_4 = new Button(temp);
-		btnSkill_4.setPosition(
-				GameScreen.ScreenWidth - skillTextureRegion_4.getRegionWidth()
-						- GameScreen.ScreenWidth / 40,
-				+GameScreen.ScreenHeight / 40);
+		btnSkill_4
+				.setPosition(
+						GameScreen.ScreenWidth
+								- skillTexRegion_4.getRegionWidth() * 3
+								- GameScreen.ScreenWidth * 3 / 50,
+						(skillTexRegion_4.getRegionHeight() + GameScreen.ScreenHeight / 50) / 2);
 		btnSkill_4.addListener(new InputListener() {
 
 			@Override
@@ -181,12 +283,12 @@ public class UserControlScreen extends Actor {
 			}
 		});
 
-		temp.setRegion(skillTextureRegion_spec);
+		temp.setRegion(skillTexRegion_spec);
 		btnSkill_spec = new Button(temp);
 		btnSkill_spec.setPosition(
-				GameScreen.ScreenWidth / 40,
-				GameScreen.ScreenHeight / 2
-						- skillTextureRegion_spec.getRegionHeight() / 2);
+				GameScreen.ScreenWidth / 2 - chatTexRegion.getRegionWidth() / 2
+						- skillTexRegion_spec.getRegionWidth() * 2,
+				GameScreen.ScreenWidth / 50);
 		btnSkill_spec.addListener(new InputListener() {
 
 			@Override
@@ -209,10 +311,10 @@ public class UserControlScreen extends Actor {
 		temp.setRegion(itemTexRegion);
 		btnItem = new Button(temp);
 		btnItem.setPosition(
-				GameScreen.ScreenWidth * 29 / 30
+				GameScreen.ScreenWidth * 49 / 50
 						- itemTexRegion.getRegionWidth(),
-				skillTextureRegion_2.getRegionHeight() * 2
-						+ GameScreen.ScreenHeight * 4 / 30);
+				skillTexRegion_2.getRegionHeight() * 2
+						+ GameScreen.ScreenHeight * 2 / 30);
 		btnItem.addListener(new InputListener() {
 
 			@Override
@@ -254,17 +356,17 @@ public class UserControlScreen extends Actor {
 		// GameScreen.ScreenHeight * 8 / 10);
 		batch.draw(
 				hpTexRegion,
-				GameScreen.ScreenWidth / 30
+				GameScreen.ScreenWidth / 50
 						+ headTextureRegion.getRegionWidth() + 10,
-				GameScreen.ScreenHeight * 8 / 10
-						+ headTextureRegion.getRegionHeight() * 3 / 4 - 10);
+				GameScreen.ScreenHeight - GameScreen.ScreenWidth / 50
+						- headTextureRegion.getRegionHeight() / 2 + 5);
 		batch.draw(
 				mpTexRegion,
-				GameScreen.ScreenWidth / 30
+				GameScreen.ScreenWidth / 50
 						+ headTextureRegion.getRegionWidth() + 10,
-				GameScreen.ScreenHeight * 8 / 10
-						+ headTextureRegion.getRegionHeight() * 3 / 4
-						- GameScreen.ScreenWidth / 40 - 20);
+				GameScreen.ScreenHeight - GameScreen.ScreenWidth / 50
+						- headTextureRegion.getRegionHeight() / 2
+						- mpTexRegion.getRegionHeight() - 5);
 
 		// //////////////////////monsterState////////////////////
 		batch.draw(monterHpTexRegion, GameScreen.ScreenWidth / 2
@@ -306,6 +408,42 @@ public class UserControlScreen extends Actor {
 		// GameScreen.ScreenWidth - miniMapTexRegion.getRegionWidth(),
 		// GameScreen.ScreenHeight - miniMapTexRegion.getRegionHeight());
 
+		// //////////////////////missionDetail////////////////////
+		batch.draw(missionDetailTexRegion,
+				GameScreen.ScreenWidth - settingTexRegion.getRegionWidth()
+						- missionDetailTexRegion.getRegionWidth() - 20,
+				GameScreen.ScreenHeight - miniMapTexRegion.getRegionHeight()
+						* 2 - 25);
+
+		// ////////////////////teamState////////////////////
+		batch.draw(
+				teamTexRegion,
+				GameScreen.ScreenWidth / 40,
+				GameScreen.ScreenHeight - headTextureRegion.getRegionHeight()
+						- GameScreen.ScreenWidth / 50
+						- teamTexRegion.getRegionHeight() - 10);
+
+		// ////////////////////getGoods////////////////////
+		batch.draw(getGoodsTexRegion, 0, GameScreen.ScreenHeight
+				- GameScreen.ScreenWidth / 50);
+
+		// ////////////////////systemNotice////////////////////
+		batch.draw(systemNoticeTexRegion, GameScreen.ScreenWidth / 2
+				- systemNoticeTexRegion.getRegionWidth() / 2,
+				GameScreen.ScreenHeight * 9 / 10 - 30);
+
 	}
 
+	public void addToStage(Stage stage) {
+		stage.addActor(btnPlayerHead);
+		stage.addActor(btnSkill_1);
+		stage.addActor(btnSkill_2);
+		stage.addActor(btnSkill_3);
+		stage.addActor(btnSkill_4);
+		stage.addActor(btnSkill_spec);
+		stage.addActor(btnItem);
+		stage.addActor(btnMiniMap);
+		stage.addActor(btnChat);
+		stage.addActor(btnSetting);
+	}
 }

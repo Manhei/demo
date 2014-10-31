@@ -75,14 +75,7 @@ public class GameScreen implements Screen {
 		stage.addActor(screenMap);
 		stage.addActor(rocker);
 		stage.addActor(fps);
-		stage.addActor(ucs.btnPlayerHead);
-		stage.addActor(ucs.btnSkill_1);
-		stage.addActor(ucs.btnSkill_2);
-		stage.addActor(ucs.btnSkill_3);
-		stage.addActor(ucs.btnSkill_4);
-		stage.addActor(ucs.btnSkill_spec);
-		stage.addActor(ucs.btnItem);
-		stage.addActor(ucs.btnMiniMap);
+		ucs.addToStage(stage);
 
 		InputMultiplexer multiplexer = new InputMultiplexer();
 		multiplexer.addProcessor(stage);

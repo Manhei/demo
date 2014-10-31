@@ -1,6 +1,7 @@
 package com.blackvine.drawmap;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.blackvine.actor.Hero;
 import com.blackvine.manager.PieceManager;
 
 /**
@@ -90,7 +91,9 @@ public class NinePieceMap {
 	}
 
 	public void preload() {
+
 		PieceManager.getPieceManager().load(pieceX_InWorld - 1,
 				pieceY_InWorld - 1, col + 2);
+
 	}
 }
