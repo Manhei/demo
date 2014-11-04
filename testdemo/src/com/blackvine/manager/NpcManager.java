@@ -1,5 +1,6 @@
 package com.blackvine.manager;
 
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 
 /**
@@ -29,5 +30,14 @@ public class NpcManager {
 			Instance = new NpcManager();
 		}
 		return Instance;
+	}
+
+	/**
+	 * 添加NPC
+	 * @param screen 添加到哪
+	 * @param npcNo npc编号
+	 */
+	public void addNpc(Screen screen,int npcNo) {
+
 	}
 }

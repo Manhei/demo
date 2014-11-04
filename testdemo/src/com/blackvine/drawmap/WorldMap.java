@@ -2,6 +2,7 @@ package com.blackvine.drawmap;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.blackvine.manager.PieceManager;
+import com.blackvine.manager.SingleAssetManager;
 import com.me.mygdxgame.GameScreen;
 
 /**
@@ -15,14 +16,14 @@ public class WorldMap {
 	private static final int piece_map_width = 64; // 地图块宽度
 	private static final int piece_map_height = 4; // 地图块高度
 	public PieceManager pieceManager;
-	public AssetManager am;
+	public SingleAssetManager am;
 	public boolean isLoding = true;
 
 	private String mapFile[]; // 地图文件列表
 
 	private WorldMap() {
 		pieceManager = PieceManager.getPieceManager();
-		am = new AssetManager();
+		am = SingleAssetManager.getSingleAssetManager();
 		load();
 	}
 
