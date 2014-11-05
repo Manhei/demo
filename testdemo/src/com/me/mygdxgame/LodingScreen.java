@@ -21,8 +21,8 @@ class LodingScreen implements Screen {
     public void render(float delta) {
         WorldMap.getWorldMap().updateAssetManager();
         if (!WorldMap.getWorldMap().isLoding) {
-            NinePieceMap.getNinePieceMap().updatePiece();
-            NinePieceMap.getNinePieceMap().preload();
+//            NinePieceMap.getNinePieceMap().updatePiece();
+//            NinePieceMap.getNinePieceMap().preload();
             game.setScreen(new GameScreen());
         }
     }

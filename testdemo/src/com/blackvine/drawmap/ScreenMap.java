@@ -1,5 +1,6 @@
 package com.blackvine.drawmap;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
@@ -13,7 +14,8 @@ public class ScreenMap extends Actor {
 	private int xInWorld = 2600; // 当前屏幕在世界地图的X坐标
 	private int yInWorld = 1024; // 当前屏幕在世界地图的Y坐标
 
-	private NinePieceMap map;
+//	private NinePieceMap map;
+    private C45DegreesMap map;
 	private WorldMap worldMap;
 
 	private ScreenMap() {
@@ -21,13 +23,14 @@ public class ScreenMap extends Actor {
 
 	public void load() {
 		worldMap = WorldMap.getWorldMap();
-		map = NinePieceMap.getNinePieceMap();
+//		map = NinePieceMap.getNinePieceMap();
+        map = new C45DegreesMap();
 	}
 
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		worldMap.updateAssetManager();
-		map.draw(batch, parentAlpha);
+		map.draw(batch, -100, -Gdx.graphics.getHeight());
 		super.draw(batch, parentAlpha);
 	}
 

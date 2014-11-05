@@ -22,7 +22,7 @@ public class WorldMap {
 	private String mapFile[]; // 地图文件列表
 
 	private WorldMap() {
-		pieceManager = PieceManager.getPieceManager();
+//		pieceManager = PieceManager.getPieceManager();
 		am = SingleAssetManager.getSingleAssetManager();
 		load();
 	}
