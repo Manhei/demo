@@ -2,8 +2,11 @@ package com.blackvine.manager;
 
 import java.io.File;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.blackvine.constant.Constants;
 import com.blackvine.tools.MyFileNameFilter;
 
 public class SingleAssetManager extends AssetManager {
@@ -18,9 +21,14 @@ public class SingleAssetManager extends AssetManager {
 	MyFileNameFilter filter;
 
 	private SingleAssetManager() {
-
+		addTextureAsset();
 	}
 
+	/**
+	 * 单例获取资源管理器
+	 * 
+	 * @return SingleAssetManager
+	 */
 	public static SingleAssetManager getSingleAssetManager() {
 		if (Instance == null) {
 			Instance = new SingleAssetManager();
@@ -32,17 +40,23 @@ public class SingleAssetManager extends AssetManager {
 	 * 加载纹理资源
 	 */
 	public void addTextureAsset() {
-		skillFile = new File("skill/");
+		// skillFile = new File("assets" + File.separator + "skill"
+		// + File.separator);
+		skillFile = new File(Constants.SKILL_DIR);
 		skillsDir = skillFile.listFiles();
 		filter = new MyFileNameFilter();
 		for (int i = 0; i < skillsDir.length; i++) {
-			filePath = filePath.append("skill/" + i + "/");
+			// filePath = filePath.append("skill/" + i + "/");
+			filePath = filePath.append(Constants.SKILL_DIR + i);
 			singleSkill = new File(filePath.toString());
 			singleSkillDir = singleSkill.listFiles(filter);
 			for (int j = 0; j < singleSkillDir.length; j++) {
-				Instance.load("skill/" + i + "/" + j + ".png", Texture.class);
+				this.load(Constants.SKILL_DIR + i + "/" + j + ".png",
+						Texture.class);
+			}
+			if (filePath.length() > 0) {
+				filePath = filePath.delete(0, filePath.length());
 			}
 		}
 	}
-
 }

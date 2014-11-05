@@ -1,0 +1,9 @@
+
+*.class
+project.properties
+*/bin/
+*/.settings/
+.classpath
+*.log
+.DS_Store
+*/gen/

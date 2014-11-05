@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.blackvine.drawmap.ScreenMap;
+import com.blackvine.manager.SkillManager;
 import com.me.mygdxgame.GameScreen;
 
 /**
@@ -59,7 +60,20 @@ public class Hero {
 	private float screenX;
 	private float screenY;
 
+	public SkillManager mSkillManager;
+	int[] skillsNo = new int[] { 0, 1, 2, 3, 4, 5, 6, 7 };
+
 	private Hero() {
+		init();
+		initSkill();
+	}
+
+	private void initSkill() {
+		mSkillManager = SkillManager.getInstance();
+		mSkillManager.setSkillByNo(new int[] { 0, 1, 2, 3, 4, 5, 6, 7 });
+	}
+
+	private void init() {
 		ta = new TextureAtlas(Gdx.files.internal("data/hero.pack"));
 		hero = ta.findRegion("hero_girl");
 		walkFrames = hero.split(heroWidth, heroHeight);
@@ -90,7 +104,6 @@ public class Hero {
 				walkFrames[4][0]);
 		setScreenX(GameScreen.ScreenWidth / 2 - getHeroWidth / 2);
 		setScreenY(GameScreen.ScreenHeight / 2 - getHeroHeight / 2);
-
 	}
 
 	public void draw(SpriteBatch batch) {

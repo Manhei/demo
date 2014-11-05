@@ -1,5 +1,6 @@
 package com.me.mygdxgame;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.blackvine.actor.Hero;
+import com.blackvine.animation.MyAnimation;
 
 /**
  * 用户操作层 状态显示 技能按钮 小地图等界面
@@ -34,6 +37,11 @@ public class UserControlScreen extends Actor {
 	TextureRegion skillTexRegion_1, skillTexRegion_2, skillTexRegion_3,
 			skillTexRegion_4, skillTexRegion_spec;
 	TextureRegionDrawable temp;
+
+	MyAnimation ani;
+	float stateTime = 0;
+	private TextureRegion currentFrame;
+	public static boolean flag = false;
 
 	public static UserControlScreen getInstance() {
 		if (Instance == null) {
@@ -61,7 +69,8 @@ public class UserControlScreen extends Actor {
 	}
 
 	private void systemNotice() {
-		Pixmap systemNoticePix = new Pixmap((int) (GameScreen.ScreenWidth / 2.5),
+		Pixmap systemNoticePix = new Pixmap(
+				(int) (GameScreen.ScreenWidth / 2.5),
 				GameScreen.ScreenWidth / 35, Pixmap.Format.RGBA8888);
 		systemNoticePix.setColor(Color.WHITE);
 		systemNoticePix.fillRectangle(0, 0,
@@ -227,6 +236,8 @@ public class UserControlScreen extends Actor {
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
 				System.out.println("点击了技能1");
+				ani = Hero.getHero().mSkillManager.getSkillByNumber(0).skillAni;
+				flag = true;
 				return super.touchDown(event, x, y, pointer, button);
 			}
 		});
@@ -432,6 +443,22 @@ public class UserControlScreen extends Actor {
 				- systemNoticeTexRegion.getRegionWidth() / 2,
 				GameScreen.ScreenHeight * 9 / 10 - 30);
 
+		if (flag) {
+			try {
+				stateTime += Gdx.graphics.getDeltaTime();
+				currentFrame = ani.getKeyFrame(stateTime);
+				// batch.draw(
+				// currentFrame,
+				// GameScreen.ScreenWidth / 2
+				// - currentFrame.getRegionWidth() / 2,
+				// GameScreen.ScreenHeight / 2
+				// - currentFrame.getRegionHeight() / 2, 1000, 1000);
+				batch.draw(currentFrame, 0, 0);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void addToStage(Stage stage) {
