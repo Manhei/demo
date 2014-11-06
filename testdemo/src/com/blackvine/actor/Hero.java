@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.blackvine.constant.Constants;
 import com.blackvine.drawmap.ScreenMap;
 import com.blackvine.manager.SkillManager;
 import com.me.mygdxgame.GameScreen;
@@ -70,7 +71,7 @@ public class Hero {
 
 	private void initSkill() {
 		mSkillManager = SkillManager.getInstance();
-		mSkillManager.setSkillByNo(new int[] { 0, 1, 2, 3, 4, 5, 6, 7 });
+		mSkillManager.setSkillByNo(skillsNo);
 	}
 
 	private void init() {
@@ -102,8 +103,8 @@ public class Hero {
 				walkFrames[7][0]);
 		walkAnimation[STATIC_DOWN_LEFT] = new Animation(frameDuration,
 				walkFrames[4][0]);
-		setScreenX(GameScreen.ScreenWidth / 2 - getHeroWidth / 2);
-		setScreenY(GameScreen.ScreenHeight / 2 - getHeroHeight / 2);
+		setScreenX(Constants.SCREEN_WIDTH / 2 - getHeroWidth / 2);
+		setScreenY(Constants.SCREEN_HEIGHT / 2 - getHeroHeight / 2);
 	}
 
 	public void draw(SpriteBatch batch) {

@@ -4,12 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.blackvine.actor.Hero;
 import com.blackvine.actor.Rocker;
+import com.blackvine.constant.Constants;
 import com.blackvine.drawmap.ScreenMap;
 
 /**
@@ -20,8 +22,8 @@ public class GameScreen implements Screen {
 	Label fps;
 	Label newFPS;
 
-	public static final int ScreenWidth = 800;
-	public static final int ScreenHeight = 480;
+	public static final int ScreenWidth = Constants.SCREEN_WIDTH;
+	public static final int ScreenHeight = Constants.SCREEN_HEIGHT;
 	private SpriteBatch bath;
 
 	private ScreenMap screenMap;
@@ -33,6 +35,8 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void render(float v) {
+		Gdx.gl.glClearColor(1, 1, 1, 1);
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		// 因为render方法在不停执行，那么我们就在这里实时的更新系统帧率的数据
 		// 获取fps，然后修改它的显示为获取的系统帧率值
 		newFPS = (Label) stage.getRoot().findActor("fps");
@@ -42,8 +46,10 @@ public class GameScreen implements Screen {
 		stage.act();
 		stage.draw();
 		bath.begin();
+		// bath.disableBlending();
 		hero.draw(bath);
 		ucs.draw(bath);
+		// bath.enableBlending();
 		bath.end();
 	}
 

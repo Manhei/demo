@@ -58,9 +58,9 @@ public class MyAnimation {
 			sum += (float) totalDuration[frameNumber] / 1000;
 		}
 		System.out.println(frameNumber);
-		 if (frameNumber == totalDuration.length - 1) {
-		 UserControlScreen.flag = false;
-		 }
+		if (frameNumber == totalDuration.length - 1) {
+			UserControlScreen.flag = false;
+		}
 		return frameNumber;
 	}
 }

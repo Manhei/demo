@@ -13,6 +13,7 @@ public class NpcManager {
 
 	private static NpcManager Instance = null;
 	AssetManager am;
+	
 
 	private NpcManager() {
 		am = new AssetManager();
@@ -34,10 +35,13 @@ public class NpcManager {
 
 	/**
 	 * 添加NPC
-	 * @param screen 添加到哪
-	 * @param npcNo npc编号
+	 * 
+	 * @param screen
+	 *            添加到哪
+	 * @param npcNo
+	 *            npc编号
 	 */
-	public void addNpc(Screen screen,int npcNo) {
+	public void addNpc(Screen screen, int npcNo) {
 
 	}
 }

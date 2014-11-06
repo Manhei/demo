@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
  * Created by IceChen on 14-10-5.
  */
 public class Npc extends BasicActor {
+	private int npcX, npcY;
 
 	public Npc() {
 		its = new TextureAtlas(Gdx.files.internal("data/hero.pack"));
