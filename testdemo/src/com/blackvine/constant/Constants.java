@@ -11,6 +11,7 @@ public class Constants {
 	 * 技能特效图目录
 	 */
 	public static final String SKILL_DIR = "F:/GIT/demo/testdemo-android/assets/skill/";
+	// public static final String SKILL_DIR = "assets/skill/";
 	/**
 	 * 游戏屏幕宽
 	 */

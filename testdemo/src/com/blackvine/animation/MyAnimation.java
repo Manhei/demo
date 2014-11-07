@@ -44,7 +44,8 @@ public class MyAnimation {
 	}
 
 	public int getKeyFrameIndex(float stateTime) {
-		if (keyFrames.length == 1)
+
+		if (keyFrames == null || keyFrames.length == 1)
 			return 0;
 		float temp = stateTime % totalTime;
 		int frameNumber = 0;
@@ -57,7 +58,6 @@ public class MyAnimation {
 			}
 			sum += (float) totalDuration[frameNumber] / 1000;
 		}
-		System.out.println(frameNumber);
 		if (frameNumber == totalDuration.length - 1) {
 			UserControlScreen.flag = false;
 		}

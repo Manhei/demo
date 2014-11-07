@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.blackvine.actor.Hero;
 import com.blackvine.actor.Rocker;
+import com.blackvine.animation.MyAnimation;
 import com.blackvine.constant.Constants;
 import com.blackvine.drawmap.ScreenMap;
 
@@ -32,7 +33,8 @@ public class GameScreen implements Screen {
 	private Stage stage;
 	BitmapFont font;
 	UserControlScreen ucs;
-
+	MyAnimation skill;
+	float stateTime=0;
 	@Override
 	public void render(float v) {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -60,6 +62,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void show() {
+		
 		bath = new SpriteBatch();
 		ucs = UserControlScreen.getInstance();
 		// 黑色显示

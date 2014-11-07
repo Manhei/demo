@@ -59,7 +59,7 @@ public class Skill {
 		am = SingleAssetManager.getSingleAssetManager();
 		texRegion = new TextureRegion();
 		initTextureRegionAndDuration(skillNo); // 初始化技能图片和时间
-		skillAni = new MyAnimation(duration, keyFrames);
+
 		attack_Range = new int[] { texRegion.getRegionWidth(),
 				texRegion.getRegionHeight() };
 	}
@@ -70,15 +70,21 @@ public class Skill {
 		singleSkill = new File(Constants.SKILL_DIR + skillNo);
 		filter = new MyFileNameFilter();
 		singleSkillDir = singleSkill.listFiles(filter);
-		keyFrames = new TextureRegion[singleSkillDir.length];
-		for (int i = 0; i < singleSkillDir.length; i++) {
-			tex = am.get(Constants.SKILL_DIR + skillNo + "/" + i + ".png",
-					Texture.class);
-			texRegion.setTexture(tex);
-			keyFrames[i] = texRegion;
+		if (singleSkillDir != null) {
+			keyFrames = new TextureRegion[singleSkillDir.length];
+			for (int i = 0; i < singleSkillDir.length; i++) {
+				tex = am.get("skill/" + skillNo + "/" + i + ".png",
+						Texture.class);
+				
+//				texRegion.setTexture(tex);
+				texRegion=new TextureRegion(tex);
+				keyFrames[i] = texRegion;
+			}
+			
+			duration = getDuration(Constants.SKILL_DIR + skillNo
+					+ File.separator + "delay.txt");
+			skillAni = new MyAnimation(duration, keyFrames);
 		}
-		duration = getDuration(Constants.SKILL_DIR + skillNo + File.separator
-				+ "delay.txt");
 	}
 
 	/**

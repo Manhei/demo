@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.blackvine.actor.Hero;
 import com.blackvine.animation.MyAnimation;
 import com.blackvine.constant.Constants;
+import com.blackvine.drawmap.WorldMap;
 
 /**
  * 用户操作层 状态显示 技能按钮 小地图等界面
@@ -44,7 +45,7 @@ public class UserControlScreen extends Actor {
 	private TextureRegion currentFrame;
 	public static boolean flag = false;
 
-	public int skill_1_SkillNo = 2, skill_2_SkillNo = 4, skill_3_SkillNo = 5,
+	public int skill_1_SkillNo = 1, skill_2_SkillNo = 4, skill_3_SkillNo = 5,
 			skill_4_SkillNo = 6;
 
 	public static UserControlScreen getInstance() {
@@ -465,15 +466,41 @@ public class UserControlScreen extends Actor {
 		if (flag) {
 
 			stateTime += Gdx.graphics.getDeltaTime();
-			currentFrame = ani.getKeyFrame(stateTime);
-			batch.draw(
-					currentFrame,
-					Constants.SCREEN_WIDTH / 2 - currentFrame.getRegionWidth()
-							/ 2,
-					Constants.SCREEN_HEIGHT / 2
-							- currentFrame.getRegionHeight() / 2);
-
+			if (ani != null) {
+				currentFrame = ani.getKeyFrame(stateTime);
+				// batch.draw(
+				// currentFrame,
+				// Constants.SCREEN_WIDTH / 2
+				// - currentFrame.getRegionWidth() / 2,
+				// Constants.SCREEN_HEIGHT / 2
+				// - currentFrame.getRegionHeight() / 2);
+				batch.draw(
+						currentFrame,
+						getSkill_XinWolrd() - currentFrame.getRegionWidth() / 2,
+						getSkill_YinWolrd() - currentFrame.getRegionHeight()
+								/ 2);
+			}
 		}
+	}
+
+	/**
+	 * 获取世界地图上技能的X坐标
+	 * 
+	 * @return 技能的X坐标
+	 */
+	private float getSkill_XinWolrd() {
+		float skillX = Hero.getHero().getScreenX();
+		return skillX;
+	}
+
+	/**
+	 * 获取世界地图上技能的Y坐标
+	 * 
+	 * @return 技能的Y坐标
+	 */
+	private float getSkill_YinWolrd() {
+		float skillY = Hero.getHero().getScreenY();
+		return skillY;
 	}
 
 	public void addToStage(Stage stage) {
