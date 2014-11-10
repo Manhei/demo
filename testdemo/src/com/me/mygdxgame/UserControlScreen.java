@@ -13,9 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.blackvine.actor.Hero;
+import com.blackvine.actor.Skill;
 import com.blackvine.animation.MyAnimation;
 import com.blackvine.constant.Constants;
-import com.blackvine.drawmap.WorldMap;
 
 /**
  * 用户操作层 状态显示 技能按钮 小地图等界面
@@ -41,6 +41,8 @@ public class UserControlScreen extends Actor {
 	TextureRegionDrawable temp;
 
 	MyAnimation ani;
+	Skill mSkill;
+	float drawX = 0, drawY = 0;
 	float stateTime = 0;
 	private TextureRegion currentFrame;
 	public static boolean flag = false;
@@ -242,9 +244,13 @@ public class UserControlScreen extends Actor {
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
 				System.out.println("点击了技能1");
-				ani = Hero.getHero().mSkillManager
-						.getSkillByNumber(getSkill_1_SkillNo()).skillAni;
+				mSkill = Hero.getHero().mSkillManager
+						.getSkillByNumber(getSkill_1_SkillNo());
+				ani = mSkill.skillAni;
 				stateTime = 0;
+				currentFrame = ani.getKeyFrame(stateTime);
+				drawX = getSkill_XinWolrd();
+				drawY = getSkill_YinWolrd();
 				flag = true;
 				return super.touchDown(event, x, y, pointer, button);
 			}
@@ -264,9 +270,13 @@ public class UserControlScreen extends Actor {
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
 				System.out.println("点击了技能2");
-				ani = Hero.getHero().mSkillManager
-						.getSkillByNumber(getSkill_2_SkillNo()).skillAni;
+				mSkill = Hero.getHero().mSkillManager
+						.getSkillByNumber(getSkill_2_SkillNo());
+				ani = mSkill.skillAni;
 				stateTime = 0;
+				currentFrame = ani.getKeyFrame(stateTime);
+				drawX = getSkill_XinWolrd();
+				drawY = getSkill_YinWolrd();
 				flag = true;
 				return super.touchDown(event, x, y, pointer, button);
 			}
@@ -284,9 +294,13 @@ public class UserControlScreen extends Actor {
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
 				System.out.println("点击了技能3");
-				ani = Hero.getHero().mSkillManager
-						.getSkillByNumber(getSkill_3_SkillNo()).skillAni;
+				mSkill = Hero.getHero().mSkillManager
+						.getSkillByNumber(getSkill_3_SkillNo());
+				ani = mSkill.skillAni;
 				stateTime = 0;
+				currentFrame = ani.getKeyFrame(stateTime);
+				drawX = getSkill_XinWolrd();
+				drawY = getSkill_YinWolrd();
 				flag = true;
 				return super.touchDown(event, x, y, pointer, button);
 			}
@@ -306,9 +320,13 @@ public class UserControlScreen extends Actor {
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
 				System.out.println("点击了技能4");
-				ani = Hero.getHero().mSkillManager
-						.getSkillByNumber(getSkill_4_SkillNo()).skillAni;
+				mSkill = Hero.getHero().mSkillManager
+						.getSkillByNumber(getSkill_4_SkillNo());
+				ani = mSkill.skillAni;
 				stateTime = 0;
+				currentFrame = ani.getKeyFrame(stateTime);
+				drawX = getSkill_XinWolrd();
+				drawY = getSkill_YinWolrd();
 				flag = true;
 				return super.touchDown(event, x, y, pointer, button);
 			}
@@ -474,11 +492,7 @@ public class UserControlScreen extends Actor {
 				// - currentFrame.getRegionWidth() / 2,
 				// Constants.SCREEN_HEIGHT / 2
 				// - currentFrame.getRegionHeight() / 2);
-				batch.draw(
-						currentFrame,
-						getSkill_XinWolrd() - currentFrame.getRegionWidth() / 2,
-						getSkill_YinWolrd() - currentFrame.getRegionHeight()
-								/ 2);
+				batch.draw(currentFrame, drawX, drawY);
 			}
 		}
 	}
@@ -489,7 +503,40 @@ public class UserControlScreen extends Actor {
 	 * @return 技能的X坐标
 	 */
 	private float getSkill_XinWolrd() {
-		float skillX = Hero.getHero().getScreenX();
+		int state = Hero.getHero().getState();
+		float HeroX = Constants.SCREEN_WIDTH / 2;
+		float skillX = 0;
+		float attack_Distance = mSkill.getAttack_Distance();
+		switch (state) {
+		case Hero.RIGHT:
+		case Hero.STATIC_RIGHT:
+			skillX = HeroX + attack_Distance;
+			break;
+		case Hero.LEFT:
+		case Hero.STATIC_LEFT:
+			skillX = HeroX - attack_Distance - currentFrame.getRegionWidth();
+			break;
+		case Hero.UP:
+		case Hero.DOWN:
+		case Hero.STATIC_UP:
+		case Hero.STATIC_DOWN:
+			skillX = HeroX - currentFrame.getRegionWidth() / 2;
+			break;
+
+		case Hero.UP_RIGHT:
+		case Hero.DOWN_RIGHT:
+		case Hero.STATIC_UP_RIGHT:
+		case Hero.STATIC_DOWN_RIGHT:
+			skillX = (float) (HeroX + attack_Distance * Math.cos(45));
+			break;
+		case Hero.UP_LEFT:
+		case Hero.DOWN_LEFT:
+		case Hero.STATIC_UP_LEFT:
+		case Hero.STATIC_DOWN_LEFT:
+			skillX = (float) (HeroX - attack_Distance * Math.cos(45) - currentFrame
+					.getRegionWidth());
+			break;
+		}
 		return skillX;
 	}
 
@@ -499,7 +546,44 @@ public class UserControlScreen extends Actor {
 	 * @return 技能的Y坐标
 	 */
 	private float getSkill_YinWolrd() {
-		float skillY = Hero.getHero().getScreenY();
+		int state = Hero.getHero().getState();
+		float HeroY = Constants.SCREEN_HEIGHT / 2;
+		float skillY = 0;
+		float attack_Distance = mSkill.getAttack_Distance();
+
+		switch (state) {
+		case Hero.RIGHT:
+		case Hero.STATIC_RIGHT:
+		case Hero.LEFT:
+		case Hero.STATIC_LEFT:
+			skillY = HeroY - currentFrame.getRegionHeight() / 2;
+			break;
+		case Hero.UP:
+		case Hero.STATIC_UP:
+			skillY = HeroY + attack_Distance;
+			break;
+		case Hero.DOWN:
+		case Hero.STATIC_DOWN:
+			skillY = HeroY - attack_Distance - currentFrame.getRegionHeight();
+			break;
+
+		case Hero.UP_RIGHT:
+		case Hero.UP_LEFT:
+		case Hero.STATIC_UP_RIGHT:
+		case Hero.STATIC_UP_LEFT:
+			skillY = (float) (HeroY + attack_Distance * Math.sin(45))
+					- currentFrame.getRegionHeight() / 2;
+			System.out.println(skillY);
+			break;
+		case Hero.DOWN_RIGHT:
+		case Hero.DOWN_LEFT:
+		case Hero.STATIC_DOWN_RIGHT:
+		case Hero.STATIC_DOWN_LEFT:
+			skillY = (float) (HeroY - attack_Distance * Math.sin(45))
+					- currentFrame.getRegionHeight() / 2;
+			System.out.println(skillY);
+			break;
+		}
 		return skillY;
 	}
 

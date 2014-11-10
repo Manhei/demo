@@ -4,10 +4,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 
-import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.blackvine.animation.MyAnimation;
 import com.blackvine.constant.Constants;
@@ -24,7 +24,7 @@ public class Skill {
 	// private int w;
 	// private int h;
 	private int[] attack_Range; // 攻击范围
-	private int attack_Distance = 0; // 技能攻击距离
+	private float attack_Distance = 20; // 技能攻击距离
 	public MyAnimation skillAni;
 	private int[] totalDuration;// 播放时间数组
 	public TextureRegion[] keyFrames;
@@ -38,6 +38,8 @@ public class Skill {
 	private File singleSkill; // 单个技能文件夹
 	private File[] singleSkillDir; // 单个技能目录下的文件数组
 	private MyFileNameFilter filter; // png文件过滤器
+
+	private List mList; // 技能总数list
 
 	// /**
 	// * 绘制技能
@@ -67,22 +69,25 @@ public class Skill {
 	private void initTextureRegionAndDuration(int skillNo) {
 		// singleSkill = new File("skill" + File.separator + skillNo
 		// + File.separator);
-		singleSkill = new File(Constants.SKILL_DIR + skillNo);
-		filter = new MyFileNameFilter();
-		singleSkillDir = singleSkill.listFiles(filter);
-		if (singleSkillDir != null) {
-			keyFrames = new TextureRegion[singleSkillDir.length];
-			for (int i = 0; i < singleSkillDir.length; i++) {
+		// singleSkill = new File(Constants.SKILL_DIR + skillNo);
+		// filter = new MyFileNameFilter();
+		// singleSkillDir = singleSkill.listFiles(filter);
+		mList = am.getSkillNoList();
+		if (mList != null) {
+			int texSize = Integer.parseInt((String) mList.get(skillNo));
+			keyFrames = new TextureRegion[texSize];
+			for (int i = 0; i < texSize; i++) {
 				tex = am.get("skill/" + skillNo + "/" + i + ".png",
 						Texture.class);
-				
-//				texRegion.setTexture(tex);
-				texRegion=new TextureRegion(tex);
+
+				// texRegion.setTexture(tex);
+				texRegion = new TextureRegion(tex);
 				keyFrames[i] = texRegion;
 			}
-			
+
 			duration = getDuration(Constants.SKILL_DIR + skillNo
 					+ File.separator + "delay.txt");
+			System.out.println("duration" + duration.length);
 			skillAni = new MyAnimation(duration, keyFrames);
 		}
 	}
@@ -125,7 +130,6 @@ public class Skill {
 
 			}
 		} catch (Exception e) {
-
 			e.printStackTrace();
 		} finally {
 			try {
@@ -186,7 +190,7 @@ public class Skill {
 		this.attack_Range = attack_Range;
 	}
 
-	public int getAttack_Distance() {
+	public float getAttack_Distance() {
 		return attack_Distance;
 	}
 
