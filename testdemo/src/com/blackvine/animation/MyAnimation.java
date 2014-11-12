@@ -1,6 +1,7 @@
 package com.blackvine.animation;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.me.mygdxgame.UserControlScreen;
 
 public class MyAnimation {
 	TextureRegion[] keyFrames;
@@ -57,9 +58,9 @@ public class MyAnimation {
 			}
 			sum += (float) totalDuration[frameNumber] / 1000;
 		}
-//		if (frameNumber == totalDuration.length - 1) {
-//			UserControlScreen.flag = false;
-//		}
+		if (frameNumber == totalDuration.length - 1) {
+			UserControlScreen.flag = false;
+		}
 		return frameNumber;
 	}
 }

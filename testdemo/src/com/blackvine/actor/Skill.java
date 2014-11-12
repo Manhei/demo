@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.blackvine.animation.MyAnimation;
@@ -35,11 +36,12 @@ public class Skill {
 	private int[] frameDuration, duration;// 技能时间数组
 	private SingleAssetManager am;
 
-	private File singleSkill; // 单个技能文件夹
-	private File[] singleSkillDir; // 单个技能目录下的文件数组
-	private MyFileNameFilter filter; // png文件过滤器
+	// private File singleSkill; // 单个技能文件夹
+	// private File[] singleSkillDir; // 单个技能目录下的文件数组
+	// private MyFileNameFilter filter; // png文件过滤器
 
 	private List mList; // 技能总数list
+	FileHandle mFile;
 
 	// /**
 	// * 绘制技能
@@ -87,7 +89,6 @@ public class Skill {
 
 			duration = getDuration(Constants.SKILL_DIR + skillNo
 					+ File.separator + "delay.txt");
-			System.out.println("duration" + duration.length);
 			skillAni = new MyAnimation(duration, keyFrames);
 		}
 	}
@@ -99,14 +100,13 @@ public class Skill {
 	 * @return
 	 */
 	public int[] getDuration(String filePath) {
+		mFile = Gdx.files.internal(filePath);
 		String s, s2 = null;
 		String[] array;
 		int i = 0, arrayLength = 0;
-		FileReader f = null, f1 = null;
 		BufferedReader buff = null, buff1 = null;
 		try {
-			f = new FileReader(filePath);
-			buff = new BufferedReader(f);
+			buff = new BufferedReader(mFile.reader());
 
 			while ((s = buff.readLine()) != null) {
 				{
@@ -117,15 +117,13 @@ public class Skill {
 				}
 			}
 			frameDuration = new int[arrayLength];
-			f1 = new FileReader(filePath);
-			buff1 = new BufferedReader(f1);
+			buff1 = new BufferedReader(mFile.reader());
 			while ((s = buff1.readLine()) != null) {
 				array = s.split(":");
 				if (array.length > 1) {
 					s2 = array[1].toString().trim();
 					frameDuration[i] = Integer.parseInt(s2);
 					i++;
-					// System.out.print(s2 + ",");
 				}
 
 			}
@@ -135,9 +133,7 @@ public class Skill {
 			try {
 				buff1.close();
 				buff.close();
-				f.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

@@ -6,16 +6,16 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.blackvine.actor.Hero;
 import com.blackvine.actor.Skill;
 import com.blackvine.animation.MyAnimation;
 import com.blackvine.constant.Constants;
+import com.blackvine.manager.SingleAssetManager;
 
 /**
  * 用户操作层 状态显示 技能按钮 小地图等界面
@@ -23,7 +23,7 @@ import com.blackvine.constant.Constants;
  * @author songjunfeng
  * 
  */
-public class UserControlScreen extends Actor {
+public class UserControlScreen {
 
 	private static UserControlScreen Instance = null;
 	// Texture headTexture;
@@ -32,18 +32,19 @@ public class UserControlScreen extends Actor {
 			teamTexRegion, getGoodsTexRegion, systemNoticeTexRegion;
 	Pixmap HeadPix;
 	SpriteBatch batch;
-	Button btnPlayerHead, btnSkill_1, btnSkill_2, btnSkill_3, btnSkill_4,
-			btnSkill_spec, btnItem, btnMiniMap, btnChat, btnSetting;
+	ImageButton btnPlayerHead, btnSkill_bounds_1, btnSkill_bounds_2,
+			btnSkill_bounds_3, btnSkill_bounds_4, btnSkill_bounds_spec,
+			btnItem, btnMiniMap, btnChat, btnSetting;
 	TextureRegion hpBorderTexRegion, hpTexRegion, monterHpTexRegion;
 	TextureRegion mpBorderTexRegion, mpTexRegion;
-	TextureRegion skillTexRegion_1, skillTexRegion_2, skillTexRegion_3,
-			skillTexRegion_4, skillTexRegion_spec;
+	TextureRegion skillTexRegion_bounds;
 	TextureRegionDrawable temp;
 
-	MyAnimation ani;
-	Skill mSkill;
-	float drawX = 0, drawY = 0;
-	float stateTime = 0;
+	private MyAnimation ani;
+	private Skill mSkill;
+	private SingleAssetManager am;
+	private float drawX = 0, drawY = 0;
+	private float stateTime = 0;
 	private TextureRegion currentFrame;
 	public static boolean flag = false;
 
@@ -58,34 +59,39 @@ public class UserControlScreen extends Actor {
 	}
 
 	private UserControlScreen() {
-
 		batch = new SpriteBatch();
 		// headTexture = new Texture(Gdx.files.internal("data/hero.png"));
 		// headTextureRegion = new TextureRegion(headTexture, 70, 124);
 		temp = new TextureRegionDrawable();
+		am = SingleAssetManager.getSingleAssetManager();
 		initHeroState(); // 角色状态
 		monsterState(); // 怪物状态
 		chat(); // 聊天
 		skillState(); // 技能状态
 		itemState(); // 物品栏
 		miniMap(); // 小地图
-		setting(); // 设置页面
+		// setting(); // 设置页面
 		missionDetail(); // 任务描述
 		teamState(); // 组队信息
 		getGoods();// 物品获得信息栏 屏幕最上方
 		systemNotice();// 系统公告
+
 	}
 
 	private void systemNotice() {
-		Pixmap systemNoticePix = new Pixmap(
-				(int) (Constants.SCREEN_WIDTH / 2.5),
-				Constants.SCREEN_WIDTH / 35, Pixmap.Format.RGBA8888);
-		systemNoticePix.setColor(Color.WHITE);
-		systemNoticePix.fillRectangle(0, 0,
-				(int) (Constants.SCREEN_WIDTH / 2.5),
-				Constants.SCREEN_WIDTH / 35);
-		systemNoticeTexRegion = new TextureRegion(new Texture(systemNoticePix));
-
+		// Pixmap systemNoticePix = new Pixmap(
+		// (int) (Constants.SCREEN_WIDTH / 2.5),
+		// Constants.SCREEN_WIDTH / 35, Pixmap.Format.RGBA8888);
+		// systemNoticePix.setColor(Color.WHITE);
+		// systemNoticePix.fillRectangle(0, 0,
+		// (int) (Constants.SCREEN_WIDTH / 2.5),
+		// Constants.SCREEN_WIDTH / 35);
+		systemNoticeTexRegion = new TextureRegion(am.get(
+				Constants.SCREEN_TEXTURE_DIR + "shijiegonggao.png",
+				Texture.class));
+		systemNoticeTexRegion
+				.setRegionWidth((int) (Constants.SCREEN_WIDTH / 2.5));
+		systemNoticeTexRegion.setRegionHeight(Constants.SCREEN_WIDTH / 25);
 	}
 
 	private void getGoods() {
@@ -111,12 +117,16 @@ public class UserControlScreen extends Actor {
 	}
 
 	private void missionDetail() {
-		Pixmap missionPix = new Pixmap(Constants.SCREEN_HEIGHT / 4,
-				(int) (Constants.SCREEN_HEIGHT / 3.5), Pixmap.Format.RGBA8888);
-		missionPix.setColor(Color.PINK);
-		missionPix.fillRectangle(0, 0, Constants.SCREEN_HEIGHT / 4,
-				(int) (Constants.SCREEN_HEIGHT / 3.5));
-		missionDetailTexRegion = new TextureRegion(new Texture(missionPix));
+		// Pixmap missionPix = new Pixmap(Constants.SCREEN_HEIGHT / 4,
+		// (int) (Constants.SCREEN_HEIGHT / 3.5), Pixmap.Format.RGBA8888);
+		// missionPix.setColor(Color.PINK);
+		// missionPix.fillRectangle(0, 0, Constants.SCREEN_HEIGHT / 4,
+		// (int) (Constants.SCREEN_HEIGHT / 3.5));
+		missionDetailTexRegion = new TextureRegion(am.get(
+				Constants.SCREEN_TEXTURE_DIR + "renwu.png", Texture.class));
+		missionDetailTexRegion.setRegionWidth(Constants.SCREEN_HEIGHT / 4);
+		missionDetailTexRegion
+				.setRegionHeight((int) (Constants.SCREEN_HEIGHT / 3.5));
 
 	}
 
@@ -128,7 +138,7 @@ public class UserControlScreen extends Actor {
 				Constants.SCREEN_HEIGHT / 8);
 		settingTexRegion = new TextureRegion(new Texture(settingPix));
 		temp.setRegion(settingTexRegion);
-		btnSetting = new Button(temp);
+		btnSetting = new ImageButton(temp);
 		btnSetting.setPosition(
 				Constants.SCREEN_WIDTH - settingTexRegion.getRegionWidth(),
 				Constants.SCREEN_HEIGHT - miniMapTexRegion.getRegionHeight()
@@ -146,17 +156,19 @@ public class UserControlScreen extends Actor {
 	}
 
 	private void chat() {
-		Pixmap chatPix = new Pixmap(Constants.SCREEN_WIDTH / 3,
-				Constants.SCREEN_HEIGHT / 8, Pixmap.Format.RGBA8888);
-		chatPix.setColor(Color.WHITE);
-		chatPix.drawRectangle(0, 0, Constants.SCREEN_WIDTH / 3,
-				Constants.SCREEN_HEIGHT / 8);
-		chatTexRegion = new TextureRegion(new Texture(chatPix));
-		temp.setRegion(chatTexRegion);
-		btnChat = new Button(temp);
+		// Pixmap chatPix = new Pixmap(Constants.SCREEN_WIDTH / 3,
+		// Constants.SCREEN_HEIGHT / 8, Pixmap.Format.RGBA8888);
+		// chatPix.setColor(Color.WHITE);
+		// chatPix.drawRectangle(0, 0, Constants.SCREEN_WIDTH / 3,
+		// Constants.SCREEN_HEIGHT / 8);
+		chatTexRegion = new TextureRegion(am.get(Constants.SCREEN_TEXTURE_DIR
+				+ "liaotian.png", Texture.class));
+		temp = new TextureRegionDrawable(chatTexRegion);
+		btnChat = new ImageButton(temp);
+		btnChat.setSize((float) (Constants.SCREEN_WIDTH / 2.6),
+				Constants.SCREEN_HEIGHT / 6);
 		btnChat.setPosition(
-				Constants.SCREEN_WIDTH / 2 - chatTexRegion.getRegionWidth() / 2,
-				2);
+				Constants.SCREEN_WIDTH / 2 - btnChat.getWidth() / 2, 2);
 		btnChat.addListener(new InputListener() {
 
 			@Override
@@ -170,16 +182,20 @@ public class UserControlScreen extends Actor {
 
 	private void initHeroState() {
 
-		HeadPix = new Pixmap(Constants.SCREEN_WIDTH / 10,
-				Constants.SCREEN_WIDTH / 10, Pixmap.Format.RGBA8888);
-		HeadPix.setColor(Color.WHITE);
-		HeadPix.drawRectangle(0, 0, Constants.SCREEN_WIDTH / 10,
-				Constants.SCREEN_WIDTH / 10);
-		headTextureRegion = new TextureRegion(new Texture(HeadPix));
-		temp.setRegion(headTextureRegion);
-		btnPlayerHead = new Button(temp);
-		btnPlayerHead.setPosition(Constants.SCREEN_WIDTH / 50,
-				Constants.SCREEN_HEIGHT - headTextureRegion.getRegionHeight()
+		// HeadPix = new Pixmap(Constants.SCREEN_WIDTH / 10,
+		// Constants.SCREEN_WIDTH / 10, Pixmap.Format.RGBA8888);
+		// HeadPix.setColor(Color.WHITE);
+		// HeadPix.drawRectangle(0, 0, Constants.SCREEN_WIDTH / 10,
+		// Constants.SCREEN_WIDTH / 10);
+		// headTextureRegion = new TextureRegion(new Texture(HeadPix));
+		headTextureRegion = new TextureRegion(am.get(
+				Constants.SCREEN_TEXTURE_DIR + "touxiang.png", Texture.class));
+		temp = new TextureRegionDrawable(headTextureRegion);
+		btnPlayerHead = new ImageButton(temp);
+		btnPlayerHead.setSize(Constants.SCREEN_WIDTH / 8,
+				Constants.SCREEN_WIDTH / 8);
+		btnPlayerHead.setPosition(Constants.SCREEN_WIDTH / 80,
+				Constants.SCREEN_HEIGHT - btnPlayerHead.getHeight()
 						- Constants.SCREEN_WIDTH / 50);
 		btnPlayerHead.addListener(new InputListener() {
 
@@ -218,27 +234,30 @@ public class UserControlScreen extends Actor {
 	}
 
 	private void skillState() {
-		Pixmap skillPix = new Pixmap(Constants.SCREEN_WIDTH / 15,
-				Constants.SCREEN_WIDTH / 15, Pixmap.Format.RGBA8888);
-		skillPix.setColor(Color.GREEN);
-		skillPix.drawRectangle(0, 0, Constants.SCREEN_WIDTH / 15,
+		// Pixmap skillPix = new Pixmap(Constants.SCREEN_WIDTH / 15,
+		// Constants.SCREEN_WIDTH / 15, Pixmap.Format.RGBA8888);
+		// skillPix.setColor(Color.GREEN);
+		// skillPix.drawRectangle(0, 0, Constants.SCREEN_WIDTH / 15,
+		// Constants.SCREEN_WIDTH / 15);
+		// Texture skillTex = new Texture(skillPix);
+
+		skillTexRegion_bounds = new TextureRegion(
+				am.get(Constants.SCREEN_TEXTURE_DIR + "jinengkuang.png",
+						Texture.class));
+		// skillTexRegion_2 = new TextureRegion(skillTex);
+		// skillTexRegion_3 = new TextureRegion(skillTex);
+		// skillTexRegion_4 = new TextureRegion(skillTex);
+		// skillTexRegion_spec = new TextureRegion(skillTex);
+
+		temp = new TextureRegionDrawable(skillTexRegion_bounds);
+		btnSkill_bounds_1 = new ImageButton(temp);
+		btnSkill_bounds_1.setSize(Constants.SCREEN_WIDTH / 15,
 				Constants.SCREEN_WIDTH / 15);
-		Texture skillTex = new Texture(skillPix);
-
-		skillTexRegion_1 = new TextureRegion(skillTex);
-		skillTexRegion_2 = new TextureRegion(skillTex);
-		skillTexRegion_3 = new TextureRegion(skillTex);
-		skillTexRegion_4 = new TextureRegion(skillTex);
-		skillTexRegion_spec = new TextureRegion(skillTex);
-
-		temp.setRegion(skillTexRegion_1);
-		btnSkill_1 = new Button(temp);
-		btnSkill_1.setPosition(
-				Constants.SCREEN_WIDTH - skillTexRegion_1.getRegionWidth() * 2
-						- Constants.SCREEN_WIDTH * 2 / 50,
-				skillTexRegion_1.getRegionHeight() + Constants.SCREEN_HEIGHT
-						* 2 / 50);
-		btnSkill_1.addListener(new InputListener() {
+		btnSkill_bounds_1.setPosition(Constants.SCREEN_WIDTH
+				- btnSkill_bounds_1.getWidth() * 2 - Constants.SCREEN_WIDTH * 2
+				/ 50, btnSkill_bounds_1.getHeight() + Constants.SCREEN_HEIGHT
+				* 2 / 50);
+		btnSkill_bounds_1.addListener(new InputListener() {
 
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
@@ -256,15 +275,16 @@ public class UserControlScreen extends Actor {
 			}
 		});
 
-		temp.setRegion(skillTexRegion_2);
-		btnSkill_2 = new Button(temp);
-		btnSkill_2
+		temp = new TextureRegionDrawable(skillTexRegion_bounds);
+		btnSkill_bounds_2 = new ImageButton(temp);
+		btnSkill_bounds_2.setSize(Constants.SCREEN_WIDTH / 15,
+				Constants.SCREEN_WIDTH / 15);
+		btnSkill_bounds_2
 				.setPosition(
-						Constants.SCREEN_WIDTH
-								- skillTexRegion_2.getRegionWidth()
+						Constants.SCREEN_WIDTH - btnSkill_bounds_2.getWidth()
 								- Constants.SCREEN_WIDTH / 50,
-						(skillTexRegion_2.getRegionHeight() + Constants.SCREEN_HEIGHT / 50) / 2);
-		btnSkill_2.addListener(new InputListener() {
+						(btnSkill_bounds_2.getHeight() + Constants.SCREEN_HEIGHT / 50) / 2);
+		btnSkill_bounds_2.addListener(new InputListener() {
 
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
@@ -282,13 +302,14 @@ public class UserControlScreen extends Actor {
 			}
 		});
 
-		temp.setRegion(skillTexRegion_3);
-		btnSkill_3 = new Button(temp);
-		btnSkill_3.setPosition(
-				Constants.SCREEN_WIDTH - skillTexRegion_3.getRegionWidth() * 2
-						- Constants.SCREEN_WIDTH * 2 / 50,
-				+Constants.SCREEN_HEIGHT / 50);
-		btnSkill_3.addListener(new InputListener() {
+		temp = new TextureRegionDrawable(skillTexRegion_bounds);
+		btnSkill_bounds_3 = new ImageButton(temp);
+		btnSkill_bounds_3.setSize(Constants.SCREEN_WIDTH / 15,
+				Constants.SCREEN_WIDTH / 15);
+		btnSkill_bounds_3.setPosition(Constants.SCREEN_WIDTH
+				- btnSkill_bounds_3.getWidth() * 2 - Constants.SCREEN_WIDTH * 2
+				/ 50, +Constants.SCREEN_HEIGHT / 50);
+		btnSkill_bounds_3.addListener(new InputListener() {
 
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
@@ -306,15 +327,16 @@ public class UserControlScreen extends Actor {
 			}
 		});
 
-		temp.setRegion(skillTexRegion_4);
-		btnSkill_4 = new Button(temp);
-		btnSkill_4
+		temp = new TextureRegionDrawable(skillTexRegion_bounds);
+		btnSkill_bounds_4 = new ImageButton(temp);
+		btnSkill_bounds_4.setSize(Constants.SCREEN_WIDTH / 15,
+				Constants.SCREEN_WIDTH / 15);
+		btnSkill_bounds_4
 				.setPosition(
-						Constants.SCREEN_WIDTH
-								- skillTexRegion_4.getRegionWidth() * 3
-								- Constants.SCREEN_WIDTH * 3 / 50,
-						(skillTexRegion_4.getRegionHeight() + Constants.SCREEN_HEIGHT / 50) / 2);
-		btnSkill_4.addListener(new InputListener() {
+						Constants.SCREEN_WIDTH - btnSkill_bounds_4.getWidth()
+								* 3 - Constants.SCREEN_WIDTH * 3 / 50,
+						(btnSkill_bounds_4.getHeight() + Constants.SCREEN_HEIGHT / 50) / 2);
+		btnSkill_bounds_4.addListener(new InputListener() {
 
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
@@ -332,13 +354,15 @@ public class UserControlScreen extends Actor {
 			}
 		});
 
-		temp.setRegion(skillTexRegion_spec);
-		btnSkill_spec = new Button(temp);
-		btnSkill_spec.setPosition(
-				Constants.SCREEN_WIDTH / 2 - chatTexRegion.getRegionWidth() / 2
-						- skillTexRegion_spec.getRegionWidth() * 2,
+		temp = new TextureRegionDrawable(skillTexRegion_bounds);
+		btnSkill_bounds_spec = new ImageButton(temp);
+		btnSkill_bounds_spec.setSize(Constants.SCREEN_WIDTH / 17,
+				Constants.SCREEN_WIDTH / 17);
+		btnSkill_bounds_spec.setPosition(
+				Constants.SCREEN_WIDTH / 2 - btnChat.getWidth() / 2
+						- btnSkill_bounds_spec.getWidth() * 2,
 				Constants.SCREEN_WIDTH / 50);
-		btnSkill_spec.addListener(new InputListener() {
+		btnSkill_bounds_spec.addListener(new InputListener() {
 
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
@@ -350,20 +374,22 @@ public class UserControlScreen extends Actor {
 	}
 
 	private void itemState() {
-		Pixmap itemPix = new Pixmap(Constants.SCREEN_WIDTH / 15,
-				Constants.SCREEN_WIDTH / 20, Pixmap.Format.RGBA8888);
-		itemPix.setColor(Color.WHITE);
-		itemPix.drawRectangle(0, 0, Constants.SCREEN_WIDTH / 15,
-				Constants.SCREEN_WIDTH / 20);
-		itemTexRegion = new TextureRegion(new Texture(itemPix));
+		// Pixmap itemPix = new Pixmap(Constants.SCREEN_WIDTH / 15,
+		// Constants.SCREEN_WIDTH / 20, Pixmap.Format.RGBA8888);
+		// itemPix.setColor(Color.WHITE);
+		// itemPix.drawRectangle(0, 0, Constants.SCREEN_WIDTH / 15,
+		// Constants.SCREEN_WIDTH / 20);
+		itemTexRegion = new TextureRegion(am.get(Constants.SCREEN_TEXTURE_DIR
+				+ "wupinkuang.png", Texture.class));
 
-		temp.setRegion(itemTexRegion);
-		btnItem = new Button(temp);
+		temp = new TextureRegionDrawable(itemTexRegion);
+		btnItem = new ImageButton(temp);
+		btnItem.setSize(Constants.SCREEN_WIDTH / 15,
+				Constants.SCREEN_WIDTH / 27);
 		btnItem.setPosition(
-				Constants.SCREEN_WIDTH * 49 / 50
-						- itemTexRegion.getRegionWidth(),
-				skillTexRegion_2.getRegionHeight() * 2
-						+ Constants.SCREEN_HEIGHT * 2 / 30);
+				Constants.SCREEN_WIDTH * 49 / 50 - btnItem.getWidth(),
+				btnSkill_bounds_2.getHeight() * 2 + Constants.SCREEN_HEIGHT * 2
+						/ 30);
 		btnItem.addListener(new InputListener() {
 
 			@Override
@@ -376,18 +402,20 @@ public class UserControlScreen extends Actor {
 	}
 
 	private void miniMap() {
-		Pixmap miniMapPix = new Pixmap(Constants.SCREEN_WIDTH / 6,
-				Constants.SCREEN_WIDTH / 6, Pixmap.Format.RGBA8888);
-		miniMapPix.setColor(Color.WHITE);
-		miniMapPix.drawRectangle(0, 0, Constants.SCREEN_WIDTH / 6,
-				Constants.SCREEN_WIDTH / 6);
-		miniMapTexRegion = new TextureRegion(new Texture(miniMapPix));
+		// Pixmap miniMapPix = new Pixmap(Constants.SCREEN_WIDTH / 6,
+		// Constants.SCREEN_WIDTH / 6, Pixmap.Format.RGBA8888);
+		// miniMapPix.setColor(Color.WHITE);
+		// miniMapPix.drawRectangle(0, 0, Constants.SCREEN_WIDTH / 6,
+		// Constants.SCREEN_WIDTH / 6);
+		miniMapTexRegion = new TextureRegion(am.get(
+				Constants.SCREEN_TEXTURE_DIR + "map.png", Texture.class));
 
-		temp.setRegion(miniMapTexRegion);
-		btnMiniMap = new Button(temp);
-		btnMiniMap.setPosition(
-				Constants.SCREEN_WIDTH - miniMapTexRegion.getRegionWidth(),
-				Constants.SCREEN_HEIGHT - miniMapTexRegion.getRegionHeight());
+		temp = new TextureRegionDrawable(miniMapTexRegion);
+		btnMiniMap = new ImageButton(temp);
+		btnMiniMap.setSize(Constants.SCREEN_WIDTH / 6,
+				Constants.SCREEN_WIDTH / 6);
+		btnMiniMap.setPosition(Constants.SCREEN_WIDTH - btnMiniMap.getWidth(),
+				Constants.SCREEN_HEIGHT - btnMiniMap.getHeight());
 		btnMiniMap.addListener(new InputListener() {
 
 			@Override
@@ -400,21 +428,26 @@ public class UserControlScreen extends Actor {
 	}
 
 	public void draw(SpriteBatch batch) {
+		if (flag) {
+
+			stateTime += Gdx.graphics.getDeltaTime();
+			if (ani != null) {
+				currentFrame = ani.getKeyFrame(stateTime);
+				batch.draw(currentFrame, drawX, drawY);
+			}
+		}
 		// //////////////////////HeroState////////////////////
 		// batch.draw(headTextureRegion, Constants.SCREEN_WIDTH / 30,
 		// Constants.SCREEN_HEIGHT * 8 / 10);
-		batch.draw(
-				hpTexRegion,
-				Constants.SCREEN_WIDTH / 50
-						+ headTextureRegion.getRegionWidth() + 10,
+		batch.draw(hpTexRegion,
+				Constants.SCREEN_WIDTH / 80 + btnPlayerHead.getWidth() - 2,
 				Constants.SCREEN_HEIGHT - Constants.SCREEN_WIDTH / 50
-						- headTextureRegion.getRegionHeight() / 2 + 5);
+						- btnPlayerHead.getWidth() / 2 + 5);
 		batch.draw(
 				mpTexRegion,
-				Constants.SCREEN_WIDTH / 50
-						+ headTextureRegion.getRegionWidth() + 10,
+				Constants.SCREEN_WIDTH / 80 + btnPlayerHead.getWidth() - 2,
 				Constants.SCREEN_HEIGHT - Constants.SCREEN_WIDTH / 50
-						- headTextureRegion.getRegionHeight() / 2
+						- btnPlayerHead.getHeight() / 2
 						- mpTexRegion.getRegionHeight() - 5);
 
 		// //////////////////////monsterState////////////////////
@@ -458,17 +491,16 @@ public class UserControlScreen extends Actor {
 		// Constants.SCREEN_HEIGHT - miniMapTexRegion.getRegionHeight());
 
 		// //////////////////////missionDetail////////////////////
-		batch.draw(missionDetailTexRegion,
-				Constants.SCREEN_WIDTH - settingTexRegion.getRegionWidth()
-						- missionDetailTexRegion.getRegionWidth() - 20,
-				Constants.SCREEN_HEIGHT - miniMapTexRegion.getRegionHeight()
-						* 2 - 25);
+		batch.draw(missionDetailTexRegion, Constants.SCREEN_WIDTH
+				- missionDetailTexRegion.getRegionWidth() - 10,
+				Constants.SCREEN_HEIGHT - btnMiniMap.getHeight()
+						- missionDetailTexRegion.getRegionHeight() - 12);
 
 		// ////////////////////teamState////////////////////
 		batch.draw(
 				teamTexRegion,
 				Constants.SCREEN_WIDTH / 40,
-				Constants.SCREEN_HEIGHT - headTextureRegion.getRegionHeight()
+				Constants.SCREEN_HEIGHT - btnPlayerHead.getHeight()
 						- Constants.SCREEN_WIDTH / 50
 						- teamTexRegion.getRegionHeight() - 10);
 
@@ -479,22 +511,8 @@ public class UserControlScreen extends Actor {
 		// ////////////////////systemNotice////////////////////
 		batch.draw(systemNoticeTexRegion, Constants.SCREEN_WIDTH / 2
 				- systemNoticeTexRegion.getRegionWidth() / 2,
-				Constants.SCREEN_HEIGHT * 9 / 10 - 30);
+				(float) (Constants.SCREEN_HEIGHT * 8.5 / 10) - 30);
 
-		if (flag) {
-
-			stateTime += Gdx.graphics.getDeltaTime();
-			if (ani != null) {
-				currentFrame = ani.getKeyFrame(stateTime);
-				// batch.draw(
-				// currentFrame,
-				// Constants.SCREEN_WIDTH / 2
-				// - currentFrame.getRegionWidth() / 2,
-				// Constants.SCREEN_HEIGHT / 2
-				// - currentFrame.getRegionHeight() / 2);
-				batch.draw(currentFrame, drawX, drawY);
-			}
-		}
 	}
 
 	/**
@@ -588,16 +606,17 @@ public class UserControlScreen extends Actor {
 	}
 
 	public void addToStage(Stage stage) {
+
 		stage.addActor(btnPlayerHead);
-		stage.addActor(btnSkill_1);
-		stage.addActor(btnSkill_2);
-		stage.addActor(btnSkill_3);
-		stage.addActor(btnSkill_4);
-		stage.addActor(btnSkill_spec);
+		stage.addActor(btnSkill_bounds_1);
+		stage.addActor(btnSkill_bounds_2);
+		stage.addActor(btnSkill_bounds_3);
+		stage.addActor(btnSkill_bounds_4);
+		stage.addActor(btnSkill_bounds_spec);
 		stage.addActor(btnItem);
 		stage.addActor(btnMiniMap);
 		stage.addActor(btnChat);
-		stage.addActor(btnSetting);
+		// stage.addActor(btnSetting);
 	}
 
 	public int getSkill_1_SkillNo() {
