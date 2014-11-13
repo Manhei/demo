@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -27,17 +28,17 @@ public class UserControlScreen {
 
 	private static UserControlScreen Instance = null;
 	// Texture headTexture;
-	TextureRegion headTextureRegion, itemTexRegion, miniMapTexRegion,
-			chatTexRegion, settingTexRegion, missionDetailTexRegion,
-			teamTexRegion, getGoodsTexRegion, systemNoticeTexRegion;
+	Sprite headSprite, itemSprite, miniMapSprite, chatSprite, settingSprite,
+			missionDetailSprite, teamSprite, getGoodsSprite,
+			systemNoticeSprite;
 	Pixmap HeadPix;
 	SpriteBatch batch;
 	ImageButton btnPlayerHead, btnSkill_bounds_1, btnSkill_bounds_2,
 			btnSkill_bounds_3, btnSkill_bounds_4, btnSkill_bounds_spec,
 			btnItem, btnMiniMap, btnChat, btnSetting;
-	TextureRegion hpBorderTexRegion, hpTexRegion, monterHpTexRegion;
-	TextureRegion mpBorderTexRegion, mpTexRegion;
-	TextureRegion skillTexRegion_bounds;
+	Sprite hpBorderSprite, hpSprite, monterHpSprite;
+	Sprite mpBorderSprite, mpSprite;
+	Sprite skillSprite_bounds;
 	TextureRegionDrawable temp;
 
 	private MyAnimation ani;
@@ -47,7 +48,6 @@ public class UserControlScreen {
 	private float stateTime = 0;
 	private TextureRegion currentFrame;
 	public static boolean flag = false;
-
 	public int skill_1_SkillNo = 1, skill_2_SkillNo = 4, skill_3_SkillNo = 5,
 			skill_4_SkillNo = 6;
 
@@ -86,23 +86,21 @@ public class UserControlScreen {
 		// systemNoticePix.fillRectangle(0, 0,
 		// (int) (Constants.SCREEN_WIDTH / 2.5),
 		// Constants.SCREEN_WIDTH / 35);
-		systemNoticeTexRegion = new TextureRegion(am.get(
-				Constants.SCREEN_TEXTURE_DIR + "shijiegonggao.png",
-				Texture.class));
-		systemNoticeTexRegion
-				.setRegionWidth((int) (Constants.SCREEN_WIDTH / 2.5));
-		systemNoticeTexRegion.setRegionHeight(Constants.SCREEN_WIDTH / 25);
+		systemNoticeSprite = new Sprite(am.get(Constants.SCREEN_TEXTURE_DIR
+				+ "shijiegonggao.png", Texture.class));
+		systemNoticeSprite.setRegionWidth((int) (Constants.SCREEN_WIDTH / 2.5));
+		systemNoticeSprite.setRegionHeight(Constants.SCREEN_WIDTH / 25);
 	}
 
 	private void getGoods() {
 		Pixmap getGoodsPix = new Pixmap(Constants.SCREEN_WIDTH
-				- miniMapTexRegion.getRegionWidth(),
-				Constants.SCREEN_WIDTH / 50, Pixmap.Format.RGBA8888);
+				- miniMapSprite.getRegionWidth(), Constants.SCREEN_WIDTH / 50,
+				Pixmap.Format.RGBA8888);
 		getGoodsPix.setColor(Color.WHITE);
-		getGoodsPix.fillRectangle(0, 0, Constants.SCREEN_WIDTH
-				- miniMapTexRegion.getRegionWidth(),
+		getGoodsPix.fillRectangle(0, 0,
+				Constants.SCREEN_WIDTH - miniMapSprite.getRegionWidth(),
 				Constants.SCREEN_WIDTH / 50);
-		getGoodsTexRegion = new TextureRegion(new Texture(getGoodsPix));
+		getGoodsSprite = new Sprite(new Texture(getGoodsPix));
 
 	}
 
@@ -112,7 +110,7 @@ public class UserControlScreen {
 		teamPix.setColor(Color.ORANGE);
 		teamPix.fillRectangle(0, 0, Constants.SCREEN_HEIGHT / 4,
 				(int) (Constants.SCREEN_HEIGHT / 2.8));
-		teamTexRegion = new TextureRegion(new Texture(teamPix));
+		teamSprite = new Sprite(new Texture(teamPix));
 
 	}
 
@@ -122,12 +120,14 @@ public class UserControlScreen {
 		// missionPix.setColor(Color.PINK);
 		// missionPix.fillRectangle(0, 0, Constants.SCREEN_HEIGHT / 4,
 		// (int) (Constants.SCREEN_HEIGHT / 3.5));
-		missionDetailTexRegion = new TextureRegion(am.get(
-				Constants.SCREEN_TEXTURE_DIR + "renwu.png", Texture.class));
-		missionDetailTexRegion.setRegionWidth(Constants.SCREEN_HEIGHT / 4);
-		missionDetailTexRegion
-				.setRegionHeight((int) (Constants.SCREEN_HEIGHT / 3.5));
-
+		missionDetailSprite = new Sprite(am.get(Constants.SCREEN_TEXTURE_DIR
+				+ "renwu.png", Texture.class));
+		// missionDetailTexRegion.setRegionWidth(Constants.SCREEN_HEIGHT / 4);
+		// missionDetailTexRegion
+		// .setRegionHeight((int) (Constants.SCREEN_HEIGHT / 3.5));
+		missionDetailSprite = new Sprite(missionDetailSprite);
+		missionDetailSprite.setSize((float) (Constants.SCREEN_HEIGHT / 3.2),
+				Constants.SCREEN_HEIGHT / 4);
 	}
 
 	private void setting() {
@@ -136,13 +136,13 @@ public class UserControlScreen {
 		settingPix.setColor(Color.WHITE);
 		settingPix.drawRectangle(0, 0, Constants.SCREEN_WIDTH / 3,
 				Constants.SCREEN_HEIGHT / 8);
-		settingTexRegion = new TextureRegion(new Texture(settingPix));
-		temp.setRegion(settingTexRegion);
+		settingSprite = new Sprite(new Texture(settingPix));
+		temp.setRegion(settingSprite);
 		btnSetting = new ImageButton(temp);
 		btnSetting.setPosition(
-				Constants.SCREEN_WIDTH - settingTexRegion.getRegionWidth(),
-				Constants.SCREEN_HEIGHT - miniMapTexRegion.getRegionHeight()
-						- settingTexRegion.getRegionHeight());
+				Constants.SCREEN_WIDTH - settingSprite.getRegionWidth(),
+				Constants.SCREEN_HEIGHT - miniMapSprite.getRegionHeight()
+						- settingSprite.getRegionHeight());
 		btnSetting.addListener(new InputListener() {
 
 			@Override
@@ -161,9 +161,9 @@ public class UserControlScreen {
 		// chatPix.setColor(Color.WHITE);
 		// chatPix.drawRectangle(0, 0, Constants.SCREEN_WIDTH / 3,
 		// Constants.SCREEN_HEIGHT / 8);
-		chatTexRegion = new TextureRegion(am.get(Constants.SCREEN_TEXTURE_DIR
+		chatSprite = new Sprite(am.get(Constants.SCREEN_TEXTURE_DIR
 				+ "liaotian.png", Texture.class));
-		temp = new TextureRegionDrawable(chatTexRegion);
+		temp = new TextureRegionDrawable(chatSprite);
 		btnChat = new ImageButton(temp);
 		btnChat.setSize((float) (Constants.SCREEN_WIDTH / 2.6),
 				Constants.SCREEN_HEIGHT / 6);
@@ -188,15 +188,15 @@ public class UserControlScreen {
 		// HeadPix.drawRectangle(0, 0, Constants.SCREEN_WIDTH / 10,
 		// Constants.SCREEN_WIDTH / 10);
 		// headTextureRegion = new TextureRegion(new Texture(HeadPix));
-		headTextureRegion = new TextureRegion(am.get(
-				Constants.SCREEN_TEXTURE_DIR + "touxiang.png", Texture.class));
-		temp = new TextureRegionDrawable(headTextureRegion);
+		headSprite = new Sprite(am.get(Constants.SCREEN_TEXTURE_DIR
+				+ "touxiang.png", Texture.class));
+		temp = new TextureRegionDrawable(headSprite);
 		btnPlayerHead = new ImageButton(temp);
 		btnPlayerHead.setSize(Constants.SCREEN_WIDTH / 8,
 				Constants.SCREEN_WIDTH / 8);
-		btnPlayerHead.setPosition(Constants.SCREEN_WIDTH / 80,
+		btnPlayerHead.setPosition(Constants.SCREEN_WIDTH / 100,
 				Constants.SCREEN_HEIGHT - btnPlayerHead.getHeight()
-						- Constants.SCREEN_WIDTH / 50);
+						- Constants.SCREEN_WIDTH / 80);
 		btnPlayerHead.addListener(new InputListener() {
 
 			@Override
@@ -212,25 +212,28 @@ public class UserControlScreen {
 		hpPix.setColor(Color.RED);
 		hpPix.fillRectangle(1, 1, Constants.SCREEN_WIDTH / 8,
 				Constants.SCREEN_WIDTH / 40);
-		hpTexRegion = new TextureRegion(new Texture(hpPix));
+		hpSprite = new Sprite(new Texture(hpPix));
 
 		Pixmap mpPix = new Pixmap(Constants.SCREEN_WIDTH / 8,
 				Constants.SCREEN_WIDTH / 40, Pixmap.Format.RGBA8888);
 		mpPix.setColor(Color.BLUE);
 		mpPix.fillRectangle(1, 1, Constants.SCREEN_WIDTH / 8,
 				Constants.SCREEN_WIDTH / 40);
-		mpTexRegion = new TextureRegion(new Texture(mpPix));
+		mpSprite = new Sprite(new Texture(mpPix));
 
 	}
 
 	private void monsterState() {
-		Pixmap monsterHpPix = new Pixmap(Constants.SCREEN_WIDTH / 5,
-				Constants.SCREEN_WIDTH / 35, Pixmap.Format.RGBA8888);
-		monsterHpPix.setColor(Color.GREEN);
-		monsterHpPix.fillRectangle(1, 1, Constants.SCREEN_WIDTH / 5,
-				Constants.SCREEN_WIDTH / 35);
-		Texture monsterHpTex = new Texture(monsterHpPix);
-		monterHpTexRegion = new TextureRegion(monsterHpTex);
+		// Pixmap monsterHpPix = new Pixmap(Constants.SCREEN_WIDTH / 5,
+		// Constants.SCREEN_WIDTH / 35, Pixmap.Format.RGBA8888);
+		// monsterHpPix.setColor(Color.GREEN);
+		// monsterHpPix.fillRectangle(1, 1, Constants.SCREEN_WIDTH / 5,
+		// Constants.SCREEN_WIDTH / 35);
+		// Texture monsterHpTex = new Texture(monsterHpPix);
+		monterHpSprite = new Sprite(am.get(Constants.SCREEN_TEXTURE_DIR
+				+ "guaiwu.png", Texture.class));
+		monterHpSprite.setSize(Constants.SCREEN_WIDTH / 4,
+				Constants.SCREEN_HEIGHT / 8);
 	}
 
 	private void skillState() {
@@ -241,15 +244,14 @@ public class UserControlScreen {
 		// Constants.SCREEN_WIDTH / 15);
 		// Texture skillTex = new Texture(skillPix);
 
-		skillTexRegion_bounds = new TextureRegion(
-				am.get(Constants.SCREEN_TEXTURE_DIR + "jinengkuang.png",
-						Texture.class));
+		skillSprite_bounds = new Sprite(am.get(Constants.SCREEN_TEXTURE_DIR
+				+ "jinengkuang.png", Texture.class));
 		// skillTexRegion_2 = new TextureRegion(skillTex);
 		// skillTexRegion_3 = new TextureRegion(skillTex);
 		// skillTexRegion_4 = new TextureRegion(skillTex);
 		// skillTexRegion_spec = new TextureRegion(skillTex);
 
-		temp = new TextureRegionDrawable(skillTexRegion_bounds);
+		temp = new TextureRegionDrawable(skillSprite_bounds);
 		btnSkill_bounds_1 = new ImageButton(temp);
 		btnSkill_bounds_1.setSize(Constants.SCREEN_WIDTH / 15,
 				Constants.SCREEN_WIDTH / 15);
@@ -275,7 +277,7 @@ public class UserControlScreen {
 			}
 		});
 
-		temp = new TextureRegionDrawable(skillTexRegion_bounds);
+		temp = new TextureRegionDrawable(skillSprite_bounds);
 		btnSkill_bounds_2 = new ImageButton(temp);
 		btnSkill_bounds_2.setSize(Constants.SCREEN_WIDTH / 15,
 				Constants.SCREEN_WIDTH / 15);
@@ -302,7 +304,7 @@ public class UserControlScreen {
 			}
 		});
 
-		temp = new TextureRegionDrawable(skillTexRegion_bounds);
+		temp = new TextureRegionDrawable(skillSprite_bounds);
 		btnSkill_bounds_3 = new ImageButton(temp);
 		btnSkill_bounds_3.setSize(Constants.SCREEN_WIDTH / 15,
 				Constants.SCREEN_WIDTH / 15);
@@ -327,7 +329,7 @@ public class UserControlScreen {
 			}
 		});
 
-		temp = new TextureRegionDrawable(skillTexRegion_bounds);
+		temp = new TextureRegionDrawable(skillSprite_bounds);
 		btnSkill_bounds_4 = new ImageButton(temp);
 		btnSkill_bounds_4.setSize(Constants.SCREEN_WIDTH / 15,
 				Constants.SCREEN_WIDTH / 15);
@@ -354,7 +356,7 @@ public class UserControlScreen {
 			}
 		});
 
-		temp = new TextureRegionDrawable(skillTexRegion_bounds);
+		temp = new TextureRegionDrawable(skillSprite_bounds);
 		btnSkill_bounds_spec = new ImageButton(temp);
 		btnSkill_bounds_spec.setSize(Constants.SCREEN_WIDTH / 17,
 				Constants.SCREEN_WIDTH / 17);
@@ -379,10 +381,11 @@ public class UserControlScreen {
 		// itemPix.setColor(Color.WHITE);
 		// itemPix.drawRectangle(0, 0, Constants.SCREEN_WIDTH / 15,
 		// Constants.SCREEN_WIDTH / 20);
-		itemTexRegion = new TextureRegion(am.get(Constants.SCREEN_TEXTURE_DIR
+		itemSprite = new Sprite(am.get(Constants.SCREEN_TEXTURE_DIR
 				+ "wupinkuang.png", Texture.class));
-
-		temp = new TextureRegionDrawable(itemTexRegion);
+		// itemSprite.setSize(Constants.SCREEN_WIDTH / 15,
+		// Constants.SCREEN_WIDTH / 27);
+		temp = new TextureRegionDrawable(itemSprite);
 		btnItem = new ImageButton(temp);
 		btnItem.setSize(Constants.SCREEN_WIDTH / 15,
 				Constants.SCREEN_WIDTH / 27);
@@ -407,10 +410,10 @@ public class UserControlScreen {
 		// miniMapPix.setColor(Color.WHITE);
 		// miniMapPix.drawRectangle(0, 0, Constants.SCREEN_WIDTH / 6,
 		// Constants.SCREEN_WIDTH / 6);
-		miniMapTexRegion = new TextureRegion(am.get(
-				Constants.SCREEN_TEXTURE_DIR + "map.png", Texture.class));
+		miniMapSprite = new Sprite(am.get(Constants.SCREEN_TEXTURE_DIR
+				+ "map.png", Texture.class));
 
-		temp = new TextureRegionDrawable(miniMapTexRegion);
+		temp = new TextureRegionDrawable(miniMapSprite);
 		btnMiniMap = new ImageButton(temp);
 		btnMiniMap.setSize(Constants.SCREEN_WIDTH / 6,
 				Constants.SCREEN_WIDTH / 6);
@@ -439,21 +442,22 @@ public class UserControlScreen {
 		// //////////////////////HeroState////////////////////
 		// batch.draw(headTextureRegion, Constants.SCREEN_WIDTH / 30,
 		// Constants.SCREEN_HEIGHT * 8 / 10);
-		batch.draw(hpTexRegion,
-				Constants.SCREEN_WIDTH / 80 + btnPlayerHead.getWidth() - 2,
-				Constants.SCREEN_HEIGHT - Constants.SCREEN_WIDTH / 50
+		batch.draw(hpSprite,
+				Constants.SCREEN_WIDTH / 100 + btnPlayerHead.getWidth() - 2,
+				Constants.SCREEN_HEIGHT - Constants.SCREEN_WIDTH / 80
 						- btnPlayerHead.getWidth() / 2 + 5);
 		batch.draw(
-				mpTexRegion,
-				Constants.SCREEN_WIDTH / 80 + btnPlayerHead.getWidth() - 2,
-				Constants.SCREEN_HEIGHT - Constants.SCREEN_WIDTH / 50
+				mpSprite,
+				Constants.SCREEN_WIDTH / 100 + btnPlayerHead.getWidth() - 2,
+				Constants.SCREEN_HEIGHT - Constants.SCREEN_WIDTH / 80
 						- btnPlayerHead.getHeight() / 2
-						- mpTexRegion.getRegionHeight() - 5);
+						- mpSprite.getRegionHeight() - 5);
 
 		// //////////////////////monsterState////////////////////
-		batch.draw(monterHpTexRegion, Constants.SCREEN_WIDTH / 2
-				- monterHpTexRegion.getRegionWidth() / 2,
-				Constants.SCREEN_HEIGHT * 9 / 10);
+		batch.draw(monterHpSprite,
+				Constants.SCREEN_WIDTH / 2 - monterHpSprite.getWidth() / 2,
+				Constants.SCREEN_HEIGHT - monterHpSprite.getHeight() - 5,
+				monterHpSprite.getWidth(), monterHpSprite.getHeight());
 
 		// //////////////////////skillState////////////////////
 		// batch.draw(skillTextureRegion_1, Constants.SCREEN_WIDTH
@@ -491,26 +495,30 @@ public class UserControlScreen {
 		// Constants.SCREEN_HEIGHT - miniMapTexRegion.getRegionHeight());
 
 		// //////////////////////missionDetail////////////////////
-		batch.draw(missionDetailTexRegion, Constants.SCREEN_WIDTH
-				- missionDetailTexRegion.getRegionWidth() - 10,
-				Constants.SCREEN_HEIGHT - btnMiniMap.getHeight()
-						- missionDetailTexRegion.getRegionHeight() - 12);
+		// batch.draw(missionDetailTexRegion, Constants.SCREEN_WIDTH
+		// - missionDetailTexRegion.getRegionWidth() - 10,
+		// Constants.SCREEN_HEIGHT - btnMiniMap.getHeight()
+		// - missionDetailTexRegion.getRegionHeight() - 12);
+		batch.draw(missionDetailSprite, Constants.SCREEN_WIDTH
+				- missionDetailSprite.getWidth() - 10, Constants.SCREEN_HEIGHT
+				- btnMiniMap.getHeight() - missionDetailSprite.getHeight() - 5,
+				missionDetailSprite.getWidth(), missionDetailSprite.getHeight());
 
 		// ////////////////////teamState////////////////////
 		batch.draw(
-				teamTexRegion,
+				teamSprite,
 				Constants.SCREEN_WIDTH / 40,
 				Constants.SCREEN_HEIGHT - btnPlayerHead.getHeight()
 						- Constants.SCREEN_WIDTH / 50
-						- teamTexRegion.getRegionHeight() - 10);
+						- teamSprite.getRegionHeight() - 10);
 
 		// ////////////////////getGoods////////////////////
-		batch.draw(getGoodsTexRegion, 0, Constants.SCREEN_HEIGHT
-				- Constants.SCREEN_WIDTH / 50);
+		// batch.draw(getGoodsTexRegion, 0, Constants.SCREEN_HEIGHT
+		// - Constants.SCREEN_WIDTH / 50);
 
 		// ////////////////////systemNotice////////////////////
-		batch.draw(systemNoticeTexRegion, Constants.SCREEN_WIDTH / 2
-				- systemNoticeTexRegion.getRegionWidth() / 2,
+		batch.draw(systemNoticeSprite, Constants.SCREEN_WIDTH / 2
+				- systemNoticeSprite.getRegionWidth() / 2,
 				(float) (Constants.SCREEN_HEIGHT * 8.5 / 10) - 30);
 
 	}
@@ -590,7 +598,7 @@ public class UserControlScreen {
 		case Hero.STATIC_UP_RIGHT:
 		case Hero.STATIC_UP_LEFT:
 			skillY = (float) (HeroY + attack_Distance * Math.sin(45))
-					- currentFrame.getRegionHeight() / 2;
+					- currentFrame.getRegionHeight() / 3;
 			System.out.println(skillY);
 			break;
 		case Hero.DOWN_RIGHT:
@@ -598,7 +606,7 @@ public class UserControlScreen {
 		case Hero.STATIC_DOWN_RIGHT:
 		case Hero.STATIC_DOWN_LEFT:
 			skillY = (float) (HeroY - attack_Distance * Math.sin(45))
-					- currentFrame.getRegionHeight() / 2;
+					- currentFrame.getRegionHeight() * 2 / 3;
 			System.out.println(skillY);
 			break;
 		}

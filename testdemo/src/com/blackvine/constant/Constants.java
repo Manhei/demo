@@ -26,4 +26,8 @@ public class Constants {
 	 * 游戏屏幕高
 	 */
 	public static int SCREEN_HEIGHT = 540;
+	/**
+	 * 释放技能是否震动
+	 */
+	public static boolean ISVIBRATE = true;
 }

@@ -31,6 +31,7 @@ public class Skill {
 	public TextureRegion[] keyFrames;
 	public TextureRegion texRegion;
 	public Texture tex;
+	private long[] vibrateTime;// 技能震动时间
 
 	private int skillNo;// 技能编号
 	private int[] frameDuration, duration;// 技能时间数组
@@ -192,5 +193,13 @@ public class Skill {
 
 	public void setAttack_Distance(int attack_Distance) {
 		this.attack_Distance = attack_Distance;
+	}
+
+	public long[] getVibrateTime() {
+		return vibrateTime;
+	}
+
+	public void setVibrateTime(long[] vibrateTime) {
+		this.vibrateTime = vibrateTime;
 	}
 }

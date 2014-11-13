@@ -32,7 +32,6 @@ public class GameScreen implements Screen {
 	private Stage stage;
 	private BitmapFont font;
 	private UserControlScreen ucs;
-	float stateTime = 0;
 
 	@Override
 	public void render(float v) {
@@ -69,8 +68,8 @@ public class GameScreen implements Screen {
 		fps = new Label("FPS:", labelStyle);
 		fps.setName("fps");
 		// 显示在左上角位置,减去显示字体的高度，要不然会跑到屏幕外面，根本看不到
-		fps.setY(Gdx.graphics.getHeight() - fps.getHeight() - 30);
-		fps.setX(0);
+		fps.setY(Constants.SCREEN_HEIGHT * 2 / 3);
+		fps.setX(Constants.SCREEN_WIDTH / 2);
 
 		screenMap = ScreenMap.getInstance();
 		hero = Hero.getHero();
